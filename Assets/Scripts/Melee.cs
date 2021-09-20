@@ -9,11 +9,19 @@ public class Melee : MonoBehaviour {
     public DamageIndicator indicator;
     public Transform meleePos, indicatorPos;
     public CameraShake cameraShake;
+    public Gun currentGun;
 
     public float meleeRate;
     public float impactForce;
 
+    [HideInInspector]
+    public bool isMeleeing;
+
     float nextMeleeTime = 0;
+
+    private void Start() {
+        isMeleeing = false;
+    }
 
     private void Update() {
         if(nextMeleeTime <= 0) {
@@ -26,6 +34,8 @@ public class Melee : MonoBehaviour {
     void DoMelee() {
         if(Input.GetKeyDown(KeyCode.C)) {
 
+            StartCoroutine(StopForMelee());
+            
             GetComponent<PlayerShoot>().currentGun.GetComponent<Animator>().SetTrigger("Melee");
 
             StartCoroutine(cameraShake.Shake(0.05f, 0.1f));
@@ -46,5 +56,17 @@ public class Melee : MonoBehaviour {
             }
 
         }
+    }
+
+    IEnumerator StopForMelee() {
+        isMeleeing = true;
+        if(currentGun.isReloading) {
+            currentGun.StopAllCoroutines();
+            currentGun.isReloading = false;
+        }
+        currentGun.canReload = false;
+        yield return new WaitForSeconds(1 / meleeRate);
+        currentGun.canReload = true;
+        isMeleeing = false;
     }
 }

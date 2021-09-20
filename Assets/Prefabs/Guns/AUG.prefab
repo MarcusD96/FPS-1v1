@@ -77,7 +77,7 @@ MonoBehaviour:
   recoil: 0.1
   maxRecoil_X: -5
   recoilSpeed: 4
-  recoilPower: 0.03
+  recoilPower: 0.125
 --- !u!95 &5084117027985621331
 Animator:
   serializedVersion: 3

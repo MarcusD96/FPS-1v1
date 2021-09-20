@@ -13,6 +13,7 @@ public class PlayerShoot : MonoBehaviour {
     public Gun[] guns;
     public TextMeshProUGUI ammoText;
     public CameraShake cameraShake;
+    public Melee meleeComp;
 
     float nextFire = 0;
     int gunIndex = 0;
@@ -28,6 +29,9 @@ public class PlayerShoot : MonoBehaviour {
 
     void Shoot() {
         ammoText.text = currentGun.currentAmmo.ToString() + "/" + currentGun.magazineSize;
+
+        if(meleeComp.isMeleeing)
+            return;
 
         if(currentGun.isReloading)
             return;
@@ -93,27 +97,32 @@ public class PlayerShoot : MonoBehaviour {
 
     void SwitchWeapon() {
         if(Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.Q)) {
+            currentGun.isReloading = false;
+            gunIndex--;
+            if(gunIndex < 0)
+                gunIndex = guns.Length - 1;
+
+            EquipWeapon();
+        }
+        if(Input.GetAxis("Mouse ScrollWheel") < 0) {
+            currentGun.isReloading = false;
             gunIndex++;
             if(gunIndex >= guns.Length)
                 gunIndex = 0;
             EquipWeapon();
         }
-        if(Input.GetAxis("Mouse ScrollWheel") < 0) {
-            gunIndex--;
-            if(gunIndex < 0)
-                gunIndex = guns.Length - 1;
-            EquipWeapon();
-        }
     }
 
     void EquipWeapon() {
-        currentGun = guns[gunIndex];
+        if(meleeComp.isMeleeing)
+            return;
+
+        meleeComp.currentGun = currentGun = guns[gunIndex];
         for(int i = 0; i < guns.Length; i++) {
             if(i == gunIndex)
                 guns[i].gameObject.SetActive(true);
             else
                 guns[i].gameObject.SetActive(false);
-
         }
     }
 
@@ -131,6 +140,10 @@ public class PlayerShoot : MonoBehaviour {
         float rangeNorm = ((distToTarget_ - currentGun.minRange) / range);
         //print("Distance: " + distToTarget_ + "\nRange: " + range + "\nNorm: " + rangeNorm);
         return Mathf.CeilToInt(Mathf.Lerp(currentGun.damage, currentGun.damage * 0.3f, rangeNorm));
+    }
+
+    public Gun GetCurrentGun() {
+        return currentGun;
     }
 
 }

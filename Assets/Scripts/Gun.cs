@@ -5,7 +5,7 @@ public class Gun : MonoBehaviour {
 
     public float fireRate, impactForce, damage, reloadTime, minRange, maxRange;
     public int magazineSize;
-    public bool isAuto;
+    public bool isAuto, canReload;
 
     public ParticleSystem muzzleFlash;
     public BulletCasing bulletCasingPrefab;
@@ -22,42 +22,44 @@ public class Gun : MonoBehaviour {
 
     private void Start() {
         isReloading = false;
+        canReload = true;
         recoil = GetComponent<Recoil>();
         animator = GetComponent<Animator>();
         currentAmmo = magazineSize + 1;
     }
 
     private void Update() {
+        if(canReload == false)
+            return;
+
         if(!isReloading && currentAmmo != magazineSize + 1) {
             if(Input.GetKeyDown(KeyCode.R)) {
-                StartCoroutine(ReloadTime());
+                Reload();
             }
         }
+        if(!isReloading && currentAmmo <= 0)
+            Reload();
     }
 
     private void OnEnable() {
         if(isReloading)
-            StartCoroutine(ReloadTime());
+            Reload();
     }
 
     public void Fire() {
+        if(currentAmmo <= 0) {
+            Reload();
+        }
         recoil.StartRecoil();
         currentAmmo--;
         var c = Instantiate(bulletCasingPrefab, ejectPort.position, bulletCasingPrefab.transform.rotation);
         c.Initialize(transform.right.normalized + transform.up.normalized * 3);
         if(animator)
             animator.SetTrigger("Fire");
-        if(currentAmmo <= 0) {
-            StartCoroutine(ReloadTime());
-        }
     }
 
     public void Reload() {
-        if(currentAmmo > 0)
-            currentAmmo = magazineSize + 1;
-        else
-            currentAmmo = magazineSize;
-        isReloading = false;
+        StartCoroutine(ReloadTime());
     }
 
     IEnumerator ReloadTime() {
@@ -69,6 +71,10 @@ public class Gun : MonoBehaviour {
             yield return null;
         }
 
-        Reload();
+        if(currentAmmo > 0)
+            currentAmmo = magazineSize + 1;
+        else
+            currentAmmo = magazineSize;
+        isReloading = false;
     }
 }

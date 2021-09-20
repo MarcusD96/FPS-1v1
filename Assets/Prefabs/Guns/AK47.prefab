@@ -268,7 +268,7 @@ Transform:
   m_GameObject: {fileID: 1988887382678975540}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: -1}
   m_Children:
   - {fileID: 8669462058052954214}
   - {fileID: 4774016400548321921}
@@ -302,7 +302,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1993499938672770663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8569, z: 0.0761}
+  m_LocalPosition: {x: 0.085, y: 0.805, z: 0.023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5100397796180211401}
@@ -568,6 +568,7 @@ MonoBehaviour:
   maxRange: 75
   magazineSize: 30
   isAuto: 1
+  canReload: 0
   muzzleFlash: {fileID: 97257573060961120}
   bulletCasingPrefab: {fileID: -6801826427072952609, guid: 8c7077c6594aff34582b8e3eb815c827, type: 3}
   ejectPort: {fileID: 226333901875633476}
@@ -5585,7 +5586,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6815635026297212683}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0629, y: 0.888, z: 1.963}
+  m_LocalPosition: {x: 0.0505, y: 0.7141, z: 1.963}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2911189030885313270}
