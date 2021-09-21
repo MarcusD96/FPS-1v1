@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour {
 
-    public float fireRate, impactForce, damage, reloadTime, minRange, maxRange;
+    public float fireRate, impactForce, damage, reloadTime, minRange, maxRange, adsMinFOV, adsSensitivity;
     public int magazineSize;
     public bool isAuto, canReload;
 

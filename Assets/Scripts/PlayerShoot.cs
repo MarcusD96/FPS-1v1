@@ -28,6 +28,8 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     void Shoot() {
+        nextFire -= Time.deltaTime;
+
         ammoText.text = currentGun.currentAmmo.ToString() + "/" + currentGun.magazineSize;
 
         if(meleeComp.isMeleeing)
@@ -54,7 +56,6 @@ public class PlayerShoot : MonoBehaviour {
                 }
             }
         }
-        nextFire -= Time.deltaTime;
     }
 
     void Fire() {

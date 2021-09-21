@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2777870537864339901}
   - component: {fileID: 7071797683502914561}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3351855648962439346}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: FirePos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 2721673862632417299}
   - component: {fileID: 9039303826372905119}
   - component: {fileID: 5408307601178265682}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Muzzle Flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5003,7 +5003,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3161913194770630315}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5038,7 +5038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 12162686935465435}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Eject Port
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5070,7 +5070,7 @@ GameObject:
   - component: {fileID: 7958614306201641929}
   - component: {fileID: 962171100983661128}
   - component: {fileID: 1080723729653795018}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Pistol_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5152,7 +5152,7 @@ GameObject:
   - component: {fileID: 3254163912942097358}
   - component: {fileID: -8207906075172842455}
   - component: {fileID: 3643571710445351919}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: M9 Beretta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5166,7 +5166,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3276847151287342471}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.47899997, y: -0.45499992, z: 0.90800005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5194,8 +5194,11 @@ MonoBehaviour:
   reloadTime: 1.5
   minRange: 10
   maxRange: 40
+  adsMinFOV: 50
+  adsSensitivity: 250
   magazineSize: 15
   isAuto: 0
+  canReload: 0
   muzzleFlash: {fileID: 9039303826372905119}
   bulletCasingPrefab: {fileID: -2324815831994801041, guid: d121f1f487b5a7949b8fcbc9ef6643d0, type: 3}
   ejectPort: {fileID: 12162686935465435}
@@ -5248,7 +5251,7 @@ GameObject:
   - component: {fileID: 8143228365739796922}
   - component: {fileID: 4237407971372824152}
   - component: {fileID: 1335623925497314604}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Pistol_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5263,7 +5266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3521994981001499265}
   m_LocalRotation: {x: 0.49999997, y: 0.5000001, z: -0.5, w: -0.49999988}
-  m_LocalPosition: {x: 0.001220616, y: 0.1344154, z: -0.29239404}
+  m_LocalPosition: {x: 0.001220616, y: 0.1326, z: -0.29239404}
   m_LocalScale: {x: 119.38765, y: 119.38765, z: 119.38765}
   m_Children: []
   m_Father: {fileID: 3161913194770630315}
@@ -5329,7 +5332,7 @@ GameObject:
   - component: {fileID: 3297314517881066056}
   - component: {fileID: 1024610820996702589}
   - component: {fileID: 383032163848671350}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Pistol_Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5410,7 +5413,7 @@ GameObject:
   - component: {fileID: 7937427611289849139}
   - component: {fileID: 7285025155980705687}
   - component: {fileID: 8459761621994624213}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Pistol_Hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5491,7 +5494,7 @@ GameObject:
   - component: {fileID: 3487881966815651544}
   - component: {fileID: 2300549277129515509}
   - component: {fileID: 978426712340485261}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Pistol_Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
