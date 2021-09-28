@@ -11,6 +11,9 @@ public class Spawner : MonoBehaviour {
     float currentSpawnTime = 0;
 
     private void LateUpdate() {
+        if(Settings.Paused)
+            return;
+
         if(currentSpawnTime <= 0) {
             currentSpawnTime = spawnTime;
             int r = Random.Range(0, spawns.Length);

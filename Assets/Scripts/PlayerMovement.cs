@@ -6,21 +6,27 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
 
     public float moveSpeed;
-    public Transform groundCheck;
     public float groundDistance;
-    public LayerMask groundMask;
     public float jumpHeight = 3f;
+    public bool isRunning;
+    public Transform groundCheck;
+    public LayerMask groundMask;
 
     float gravity = Physics.gravity.y;
     bool isGrounded;
     Vector3 velocity;
+    PlayerShoot playerShootComp;
     CharacterController cc;
 
     private void Awake() {
         cc = GetComponent<CharacterController>();
+        playerShootComp = GetComponent<PlayerShoot>();
     }
 
     private void Update() {
+        if(Settings.Paused)
+            return;
+
         CheckGrounded();
 
         if(isGrounded && velocity.y < 0) {
@@ -45,18 +51,33 @@ public class PlayerMovement : MonoBehaviour {
     float lastSpeed = 0;
     void Move() {
         float speed = lastSpeed;
+
+
         if(isGrounded) {
-            if(Input.GetKey(KeyCode.LeftShift))
+            if(Input.GetKey(KeyCode.LeftShift) && !playerShootComp.currentGun.isReloading) {
                 speed = lastSpeed = moveSpeed * 1.5f * Time.deltaTime;
-            else
+                isRunning = true;
+            }
+            else {
                 speed = lastSpeed = moveSpeed * Time.deltaTime;
+                isRunning = false;
+            }
         }
+        else {
+            if(Input.GetKeyUp(KeyCode.LeftShift) && isRunning)
+                isRunning = false;
+        }
+
+        playerShootComp.currentGun.animator.SetBool("IsRunning", isRunning);
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
+        if(move.magnitude > 1)
+            move.Normalize();
         cc.Move(move * speed);
+        playerShootComp.currentGun.animator.SetFloat("Speed", move.magnitude);
     }
 
     float fallMultiplier = 2.5f;

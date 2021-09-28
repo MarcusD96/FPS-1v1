@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraShake : MonoBehaviour {
@@ -10,6 +9,11 @@ public class CameraShake : MonoBehaviour {
         float elapsed = 0f;
 
         while(elapsed < duration_) {
+            if(Settings.Paused) {
+                yield return null;
+                continue;
+            }
+
             float x = Random.Range(-1f, 1f) * magnitude_;
             float y = Random.Range(-1f, 1f) * magnitude_;
 

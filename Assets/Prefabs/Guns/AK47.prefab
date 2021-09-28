@@ -471,17 +471,21 @@ MonoBehaviour:
   fireRate: 10.66666
   impactForce: 100
   damage: 20
+  minDamage: 10
   reloadTime: 2
   minRange: 25
   maxRange: 70
-  adsMinFOV: 40
-  adsSensitivity: 250
+  adsZoom: 1.5
+  adsSpeed: 5
+  hipFireMaxSpread: 0.05
   magazineSize: 30
   isAuto: 1
   canReload: 0
+  maxSpread: 0
   muzzleFlash: {fileID: 97257573060961120}
   bulletCasingPrefab: {fileID: -6801826427072952609, guid: 8c7077c6594aff34582b8e3eb815c827, type: 3}
   ejectPort: {fileID: 226333901875633476}
+  animator: {fileID: 0}
   currentAmmo: 0
   recoil: {fileID: 0}
   isReloading: 0

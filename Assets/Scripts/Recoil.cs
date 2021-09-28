@@ -32,6 +32,9 @@ public class Recoil : MonoBehaviour {
     }
 
     private void Update() {
+        if(Settings.Paused)
+            return;
+
         Recoiling();
     }
 

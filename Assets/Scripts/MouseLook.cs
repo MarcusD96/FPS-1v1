@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 public class MouseLook : MonoBehaviour {
@@ -17,14 +16,17 @@ public class MouseLook : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if(Settings.Paused)
+            return;
+
         recoil -= 1f / 60f;
         if(recoil < 0)
             recoil = 0;
 
         float speed = Time.deltaTime * mouseSensitivity;
 
-        float mouseX = Input.GetAxis("Mouse X") * speed;
-        float mouseY = Input.GetAxis("Mouse Y") * speed;
+        float mouseX = Input.GetAxisRaw("Mouse X") * speed;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * speed;
 
         xRotation -= mouseY + recoil;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);

@@ -4,60 +4,69 @@ using UnityEngine;
 
 public class PlayerZoom : MonoBehaviour {
 
-    public float zoomSpeed;
+    public bool maxZoom;
     public PlayerShoot playerShoot;
     public MouseLook mouseLook;
     public Camera cam, weaponCam;
 
-    float startFOV, fovTracker;
-    bool isZoomingIn = false;
+    float fovTracker = 0;
+    public bool isZoomingIn = false;
 
-    private void Start() {
-        startFOV = cam.fieldOfView;
+    private void Update() {
+        if(Settings.Paused)
+            return;
+
+        Zoom();
+
+        fovTracker = Mathf.Clamp01(fovTracker);
+    }
+
+    public void ResetZoom() {
+        mouseLook.mouseSensitivity = Settings.Sensitivity;
+        cam.fieldOfView = weaponCam.fieldOfView = Settings.FOV;
         fovTracker = 0;
     }
 
-    private void Update() {
-        Zoom();
-    }
-
     void Zoom() {
-        if(playerShoot.currentGun.isReloading) {
+        if(playerShoot.currentGun.isReloading || playerShoot.meleeComp.isMeleeing || playerShoot.moveComp.isRunning) {
             isZoomingIn = false;
-            mouseLook.mouseSensitivity = 300;
-            cam.fieldOfView = weaponCam.fieldOfView = startFOV;
+            ResetZoom();
             return;
         }
 
         if(Input.GetMouseButton(1)) {
-            if(!isZoomingIn) {
-                isZoomingIn = true;
-                mouseLook.mouseSensitivity = playerShoot.currentGun.adsSensitivity;
-                fovTracker = 0;
-            }
-            fovTracker += zoomSpeed * Time.deltaTime;
-            cam.fieldOfView = weaponCam.fieldOfView = Mathf.Lerp(cam.fieldOfView, playerShoot.currentGun.adsMinFOV, fovTracker);
+            isZoomingIn = true;
 
+            fovTracker += playerShoot.currentGun.adsSpeed * Time.deltaTime;
+
+            mouseLook.mouseSensitivity = Mathf.Lerp(Settings.Sensitivity, playerShoot.currentGun.GetSensitivity(), fovTracker * 2);
+            cam.fieldOfView = weaponCam.fieldOfView = Mathf.Lerp(Settings.FOV, playerShoot.currentGun.GetZoomFOV(), fovTracker);
         }
         else if(Input.GetMouseButtonUp(1)) {
-            if(isZoomingIn) {
-                isZoomingIn = false;
-                mouseLook.mouseSensitivity = 300;
-            }
+            isZoomingIn = false;
             StartCoroutine(ZoomOut());
         }
-        Mathf.Clamp(cam.fieldOfView, playerShoot.currentGun.adsMinFOV, startFOV);
-        Mathf.Clamp(weaponCam.fieldOfView, playerShoot.currentGun.adsMinFOV, startFOV);
+
+        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, playerShoot.currentGun.GetZoomFOV(), Settings.FOV);
+        weaponCam.fieldOfView = Mathf.Clamp(weaponCam.fieldOfView, playerShoot.currentGun.GetZoomFOV(), Settings.FOV);
+
+        if(cam.fieldOfView <= Settings.FOV - ((Settings.FOV - playerShoot.currentGun.GetZoomFOV()) * 0.75f))
+            maxZoom = true;
+        else
+            maxZoom = false;
     }
 
     IEnumerator ZoomOut() {
-        fovTracker = 0;
+        while(cam.fieldOfView <= Settings.FOV) {
 
-        while(cam.fieldOfView <= startFOV) {
-            fovTracker += zoomSpeed * Time.deltaTime;
-            cam.fieldOfView = weaponCam.fieldOfView = Mathf.Lerp(cam.fieldOfView, startFOV, fovTracker);
+            fovTracker -= playerShoot.currentGun.adsSpeed * 2 * Time.deltaTime;
+
+            mouseLook.mouseSensitivity = Mathf.Lerp(Settings.Sensitivity, playerShoot.currentGun.GetSensitivity(), fovTracker);
+            cam.fieldOfView = weaponCam.fieldOfView = Mathf.Lerp(Settings.FOV, playerShoot.currentGun.GetZoomFOV(), fovTracker);
+
             if(isZoomingIn)
-                break;
+                yield break;
+
             yield return null;
         }
     }

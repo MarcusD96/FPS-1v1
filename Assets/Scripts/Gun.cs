@@ -3,20 +3,19 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour {
 
-    public float fireRate, impactForce, damage, reloadTime, minRange, maxRange, adsMinFOV, adsSensitivity;
+    public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireMaxSpread;
     public int magazineSize;
-    public bool isAuto, canReload;
+    public bool isAuto, canReload, maxSpread;
 
     public ParticleSystem muzzleFlash;
     public BulletCasing bulletCasingPrefab;
     public Transform ejectPort;
+    public Animator animator;
 
     [HideInInspector]
     public int currentAmmo;
     [HideInInspector]
     public Recoil recoil;
-    Animator animator;
-
     [HideInInspector]
     public bool isReloading;
 
@@ -76,5 +75,13 @@ public class Gun : MonoBehaviour {
         else
             currentAmmo = magazineSize;
         isReloading = false;
+    }
+
+    public float GetSensitivity() {
+        return Settings.Sensitivity * (GetZoomFOV() / Settings.FOV);
+    }
+
+    public float GetZoomFOV() {
+        return Settings.FOV / adsZoom;
     }
 }

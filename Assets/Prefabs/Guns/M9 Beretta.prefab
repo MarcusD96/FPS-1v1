@@ -5158,7 +5158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4545519205531887006
 Transform:
   m_ObjectHideFlags: 0
@@ -5191,17 +5191,21 @@ MonoBehaviour:
   fireRate: 6.6
   impactForce: 100
   damage: 30
+  minDamage: 5
   reloadTime: 1.5
   minRange: 10
   maxRange: 40
-  adsMinFOV: 50
-  adsSensitivity: 250
+  adsZoom: 1.25
+  adsSpeed: 5
+  hipFireMaxSpread: 0.03
   magazineSize: 15
   isAuto: 0
   canReload: 0
+  maxSpread: 0
   muzzleFlash: {fileID: 9039303826372905119}
   bulletCasingPrefab: {fileID: -2324815831994801041, guid: d121f1f487b5a7949b8fcbc9ef6643d0, type: 3}
   ejectPort: {fileID: 12162686935465435}
+  animator: {fileID: 0}
   currentAmmo: 0
   recoil: {fileID: 0}
   isReloading: 0
