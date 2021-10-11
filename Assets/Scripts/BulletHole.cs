@@ -10,6 +10,7 @@ public class BulletHole : MonoBehaviour {
 
     public void SetHitObject(GameObject g) {
         hitObject = g;
+        transform.SetParent(g.transform);
     }
 
     private void LateUpdate() {

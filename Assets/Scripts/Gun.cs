@@ -4,9 +4,10 @@ using UnityEngine;
 public class Gun : MonoBehaviour {
 
     public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireMaxSpread;
-    public int magazineSize;
+    public int magazineSize, penetration;
     public bool isAuto, canReload, maxSpread;
 
+    public GameObject model;
     public ParticleSystem muzzleFlash;
     public BulletCasing bulletCasingPrefab;
     public Transform ejectPort;
@@ -19,7 +20,7 @@ public class Gun : MonoBehaviour {
     [HideInInspector]
     public bool isReloading;
 
-    private void Start() {
+    private void Awake() {
         isReloading = false;
         canReload = true;
         recoil = GetComponent<Recoil>();
@@ -63,8 +64,8 @@ public class Gun : MonoBehaviour {
 
     IEnumerator ReloadTime() {
         isReloading = true;
-        if(animator)
-            animator.SetTrigger("Reload");
+        animator.SetTrigger("Reload");
+        animator.ResetTrigger("Fire");
         float t = reloadTime + Time.time;
         while(Time.time < t) {
             yield return null;

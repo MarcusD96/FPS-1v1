@@ -12,14 +12,17 @@ public class DamageIndicator : MonoBehaviour {
     float decreaseSpeedMultiplier;
 
     public void Initialize(float damage_, bool headshot_) {
-        text.text = damage_.ToString();
+        text.text = damage_.ToString("F0");
+        floatSpeed = Random.Range(floatSpeed * 0.5f, floatSpeed * 2f);
         if(headshot_) {
-            text.fontSize *= 2;
+            text.fontSize *= 2f;
             text.color = critColor;
+            floatSpeed *= 4f;
         }
-        decreaseSpeedMultiplier = floatSpeed * 2;
+
+        decreaseSpeedMultiplier = floatSpeed * 2f;
         var r = transform.localEulerAngles;
-        r.z = Random.Range(-45, 0);
+        r.z = Random.Range(-90f, 0f);
         transform.localEulerAngles = r;
     }
 

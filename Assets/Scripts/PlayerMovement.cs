@@ -16,11 +16,15 @@ public class PlayerMovement : MonoBehaviour {
     bool isGrounded;
     Vector3 velocity;
     PlayerShoot playerShootComp;
+    PlayerZoom zoomComp;
+    Melee meleeComp;
     CharacterController cc;
 
     private void Awake() {
         cc = GetComponent<CharacterController>();
         playerShootComp = GetComponent<PlayerShoot>();
+        zoomComp = GetComponent<PlayerZoom>();
+        meleeComp = GetComponent<Melee>();
     }
 
     private void Update() {
@@ -52,20 +56,35 @@ public class PlayerMovement : MonoBehaviour {
     void Move() {
         float speed = lastSpeed;
 
-
         if(isGrounded) {
             if(Input.GetKey(KeyCode.LeftShift) && !playerShootComp.currentGun.isReloading) {
-                speed = lastSpeed = moveSpeed * 1.5f * Time.deltaTime;
-                isRunning = true;
+                speed = lastSpeed = moveSpeed * 2f * Time.deltaTime;
+                if(!isRunning) {
+                    isRunning = true;
+                    Settings.FOV += 20f;
+                }
             }
             else {
                 speed = lastSpeed = moveSpeed * Time.deltaTime;
-                isRunning = false;
+                if(zoomComp.isZoomingIn)
+                    speed /= 2f;
+                if(isRunning) {
+                    isRunning = false;
+                    Settings.FOV -= 20f;
+                }
             }
         }
         else {
-            if(Input.GetKeyUp(KeyCode.LeftShift) && isRunning)
+            if(Input.GetKeyUp(KeyCode.LeftShift) && isRunning) {
+                Settings.FOV -= 20f;
                 isRunning = false;
+            }
+        }
+
+        if(meleeComp.isMeleeing && isRunning) {
+            speed = lastSpeed = moveSpeed * Time.deltaTime;
+            isRunning = false;
+            Settings.FOV -= 20f;
         }
 
         playerShootComp.currentGun.animator.SetBool("IsRunning", isRunning);
@@ -95,5 +114,16 @@ public class PlayerMovement : MonoBehaviour {
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
             cc.stepOffset = 0;
         }
+    }
+
+    bool CanRun() {
+        //Conditions:
+        //not meleeing
+
+        //Cancels:
+        //reload
+        //shooting
+
+        return true;
     }
 }

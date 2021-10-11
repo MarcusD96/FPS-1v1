@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using EZCameraShake;
 
 public class Melee : MonoBehaviour {
 
     public LayerMask enemyLayer;
     public DamageIndicator indicator;
     public Transform meleePos, indicatorPos;
-    public CameraShake cameraShake;
     public Gun currentGun;
+    public PlayerShoot shootComp;
 
     public float meleeRate;
     public float impactForce;
@@ -38,7 +38,7 @@ public class Melee : MonoBehaviour {
             
             GetComponent<PlayerShoot>().currentGun.GetComponent<Animator>().SetTrigger("Melee");
 
-            StartCoroutine(cameraShake.Shake(0.05f, 0.1f));
+            CameraShaker.Instance.ShakeOnce(4f, 8f, .1f, .1f);
             nextMeleeTime = 1 / meleeRate;
 
             var hits = Physics.OverlapSphere(meleePos.position + meleePos.forward, 1, enemyLayer);
@@ -46,9 +46,9 @@ public class Melee : MonoBehaviour {
             foreach(var h in hits) {
                 if(h.CompareTag("Head"))
                     continue;
-                CharacterStats cs;
-                if(h.transform.parent.TryGetComponent(out cs)) {
-                    cs.Damage(30);
+                Enemy e;
+                if(h.transform.parent.TryGetComponent(out e)) {
+                    e.Damage(30);
                     var ii = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
                     ii.transform.SetParent(indicatorPos);
                     ii.Initialize(30, false);
@@ -68,5 +68,15 @@ public class Melee : MonoBehaviour {
         yield return new WaitForSeconds(1 / meleeRate);
         currentGun.canReload = true;
         isMeleeing = false;
+    }
+
+    bool CanMelee() {
+        //Conditions:
+        //not switching weapon
+
+        //Stop Actions:
+        //Shoot, Run
+        
+        return true;
     }
 }

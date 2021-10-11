@@ -59,9 +59,11 @@ MonoBehaviour:
   adsSpeed: 5
   hipFireMaxSpread: 0.03
   magazineSize: 42
+  penetration: 1
   isAuto: 1
   canReload: 0
   maxSpread: 0
+  model: {fileID: 0}
   muzzleFlash: {fileID: 1421369170775269685}
   bulletCasingPrefab: {fileID: -1793572164128123751, guid: 826c42d20db276343815d8e268f30bc0, type: 3}
   ejectPort: {fileID: 6337658646175095018}

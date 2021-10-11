@@ -116,12 +116,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 296791932834984138}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0030000806, y: 0.17299986, z: 0.33600003}
+  m_LocalPosition: {x: 0.0030003488, y: 0.17299986, z: 0.33599937}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2721673862632417299}
-  m_Father: {fileID: 4545519205531887006}
-  m_RootOrder: 1
+  m_Father: {fileID: 3161913194770630315}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1612182881804571011
 GameObject:
@@ -5026,6 +5026,8 @@ Transform:
   - {fileID: 3487881966815651544}
   - {fileID: 8143228365739796922}
   - {fileID: 3297314517881066056}
+  - {fileID: 3351855648962439346}
+  - {fileID: 12162686935465435}
   m_Father: {fileID: 4545519205531887006}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5052,12 +5054,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3053615739060475909}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1689, z: -0.1887}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.16890001, z: -0.1887008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4545519205531887006}
-  m_RootOrder: 2
+  m_Father: {fileID: 3161913194770630315}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3236989770422461720
 GameObject:
@@ -5171,8 +5173,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3161913194770630315}
-  - {fileID: 3351855648962439346}
-  - {fileID: 12162686935465435}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5199,13 +5199,15 @@ MonoBehaviour:
   adsSpeed: 5
   hipFireMaxSpread: 0.03
   magazineSize: 15
+  penetration: 1
   isAuto: 0
   canReload: 0
   maxSpread: 0
+  model: {fileID: 2353851950885035025}
   muzzleFlash: {fileID: 9039303826372905119}
   bulletCasingPrefab: {fileID: -2324815831994801041, guid: d121f1f487b5a7949b8fcbc9ef6643d0, type: 3}
   ejectPort: {fileID: 12162686935465435}
-  animator: {fileID: 0}
+  animator: {fileID: 3643571710445351919}
   currentAmmo: 0
   recoil: {fileID: 0}
   isReloading: 0

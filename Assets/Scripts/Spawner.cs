@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour {
     public float spawnTime;
     public GameObject enemyPrefab;
     public Spawn[] spawns;
+    public bool waitForKill;
 
     float currentSpawnTime = 0;
 
@@ -18,13 +19,15 @@ public class Spawner : MonoBehaviour {
             currentSpawnTime = spawnTime;
             int r = Random.Range(0, spawns.Length);
             int i = spawns.Length;
-            while(spawns[r].enemy != null) {
-                r++;
-                if(r >= spawns.Length)
-                    r = 0;
-                if(i <= 0)
-                    return;
-                i--;
+            if(waitForKill) {
+                while(spawns[r].enemy != null) {
+                    r++;
+                    if(r >= spawns.Length)
+                        r = 0;
+                    if(i <= 0)
+                        return;
+                    i--;
+                }
             }
             GameObject g = Instantiate(enemyPrefab, spawns[r].GetPos(), Quaternion.identity);
             spawns[r].enemy = g;

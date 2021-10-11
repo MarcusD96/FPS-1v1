@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using EZCameraShake;
 
 public class PlayerShoot : MonoBehaviour {
 
@@ -13,14 +14,13 @@ public class PlayerShoot : MonoBehaviour {
     public Gun currentGun;
     public Gun[] guns;
     public TextMeshProUGUI ammoText;
-    public CameraShake cameraShake;
     public Melee meleeComp;
     public PlayerMovement moveComp;
+    public PlayerZoom zoom;
+    public float firingSpreadRadius;
 
     float nextFire = 0f;
-    float firingSpreadRadius = 0f;
-    int gunIndex = 0;
-    PlayerZoom zoom;
+    int gunIndex = 2;
 
     private void Awake() {
         zoom = GetComponent<PlayerZoom>();
@@ -63,7 +63,6 @@ public class PlayerShoot : MonoBehaviour {
         }
         else {
             if(Input.GetButtonDown("Shoot")) {
-
                 if(nextFire <= 0) {
                     CalculateSpread();
                     Fire();
@@ -76,54 +75,126 @@ public class PlayerShoot : MonoBehaviour {
 
     void Fire() {
         shootPos.GetComponent<MouseLook>().recoil += currentGun.recoil.recoilPower;
-        StartCoroutine(cameraShake.Shake(0.08f, 0.05f));
+        CameraShaker.Instance.ShakeOnce(currentGun.recoil.recoilPower * 10, 8f, .1f, .1f);
 
         currentGun.Fire();
 
         currentGun.muzzleFlash.Play();
 
-        RaycastHit hit;
         Ray ray = new Ray(shootPos.position, GetRandomForward());
-        if(Physics.Raycast(ray, out hit, 1000, shootableLayerMask)) {
-            bool hitBody = false;
-            CharacterStats cs;
-            if(hit.collider.transform.parent.TryGetComponent(out cs)) {
-                float d = Vector3.Distance(transform.position, hit.point);
-                float damageActual = CalculateDamage(d);
+        //single
+        {
+            /*RaycastHit hit;
+            if(Physics.Raycast(ray, out hit, 1000, shootableLayerMask)) {
+                bool hitBody = false;
+                Enemy cs;
+                if(hit.collider.transform.parent) {
+                    if(hit.collider.transform.parent.TryGetComponent(out cs)) {
+                        float d = Vector3.Distance(transform.position, hit.point);
+                        float damageActual = CalculateDamage(d);
 
-                if(hit.collider == cs.body) {
-                    cs.Damage(damageActual);
-                    var i = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
-                    i.transform.SetParent(indicatorPos);
-                    i.Initialize(damageActual, false);
-                    hitBody = true;
+                        if(hit.collider == cs.body) {
+                            cs.Damage(damageActual);
+                            var i = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
+                            i.transform.SetParent(indicatorPos);
+                            i.Initialize(damageActual, false);
+                            hitBody = true;
+                        }
+                        else if(hit.collider == cs.head) {
+                            cs.Damage(damageActual * 2);
+                            var i = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
+                            i.transform.SetParent(indicatorPos);
+                            i.Initialize(damageActual * 2, true);
+                            hitBody = true;
+                        }
+                    }
                 }
-                else if(hit.collider == cs.head) {
-                    cs.Damage(damageActual * 2);
-                    var i = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
-                    i.transform.SetParent(indicatorPos);
-                    i.Initialize(damageActual * 2, true);
-                    hitBody = true;
+
+                if(hit.rigidbody != null) {
+                    hit.rigidbody.AddForce(-hit.normal * currentGun.impactForce);
+                }
+
+                //effects
+                if(hitBody) {
+                    var effect = Instantiate(bloodHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                    Destroy(effect, 1f);
+                    var hole = Instantiate(bloodHole, hit.point, Quaternion.LookRotation(hit.normal));
+                    hole.SetHitObject(hit.collider.gameObject);
+                    Destroy(hole.gameObject, hole.lifeTime);
+                }
+                else {
+                    var effect = Instantiate(objectImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                    Destroy(effect, 1f);
+                    var hole = Instantiate(bulletHole, hit.point + (hit.normal * 0.01f), Quaternion.LookRotation(hit.normal));
+                    hole.SetHitObject(hit.collider.gameObject);
+                    Destroy(hole.gameObject, hole.lifeTime);
+                }
+            }
+            */
+        }
+
+        RaycastHit[] hits = Physics.RaycastAll(ray, 1000, shootableLayerMask);
+        System.Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
+
+        int p;
+        if(hits.Length <= 0)
+            return;
+        if(hits.Length <= currentGun.penetration)
+            p = hits.Length;
+        else
+            p = currentGun.penetration;
+
+        for(int i = 0; i < p; i++) {
+            if(hits[i].collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                break;
+
+            if(i > 0 && hits[i].collider.transform.parent == hits[i - 1].collider.transform.parent) {
+                p++;
+                continue;
+            }
+
+            bool hitBody = false;
+            Enemy cs;
+            if(hits[i].collider.transform.parent) {
+                if(hits[i].collider.transform.parent.TryGetComponent(out cs)) {
+                    float d = Vector3.Distance(transform.position, hits[i].point);
+                    float damageActual = CalculateDamage(d);
+                    damageActual /= i + 1;
+
+                    if(hits[i].collider == cs.body) {
+                        cs.Damage(damageActual);
+                        var ind = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
+                        ind.transform.SetParent(indicatorPos);
+                        ind.Initialize(damageActual, false);
+                        hitBody = true;
+                    }
+                    else if(hits[i].collider == cs.head) {
+                        cs.Damage(damageActual * 2);
+                        var ind = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
+                        ind.transform.SetParent(indicatorPos);
+                        ind.Initialize(damageActual * 2, true);
+                        hitBody = true;
+                    }
                 }
             }
 
-            if(hit.rigidbody != null) {
-                hit.rigidbody.AddForce(-hit.normal * currentGun.impactForce);
+            if(hits[i].rigidbody != null) {
+                hits[i].rigidbody.AddForce(-hits[i].normal * currentGun.impactForce);
             }
 
             //effects
             if(hitBody) {
-                var effect = Instantiate(bloodHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                var effect = Instantiate(bloodHitEffect, hits[i].point, Quaternion.LookRotation(hits[i].normal));
                 Destroy(effect, 1f);
-                var hole = Instantiate(bloodHole, hit.point + (hit.normal * 0.01f), Quaternion.LookRotation(hit.normal));
-                hole.SetHitObject(hit.collider.gameObject);
+                var hole = Instantiate(bloodHole, hits[i].point, Quaternion.LookRotation(hits[i].normal));
+                hole.SetHitObject(hits[i].collider.gameObject);
                 Destroy(hole.gameObject, hole.lifeTime);
             }
             else {
-                var effect = Instantiate(objectImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                var effect = Instantiate(objectImpactEffect, hits[i].point, Quaternion.LookRotation(hits[i].normal));
                 Destroy(effect, 1f);
-                var hole = Instantiate(bulletHole, hit.point + (hit.normal * 0.01f), Quaternion.LookRotation(hit.normal));
-                hole.SetHitObject(hit.collider.gameObject);
+                var hole = Instantiate(bulletHole, hits[i].point + (hits[i].normal * 0.01f), Quaternion.LookRotation(hits[i].normal));
+                hole.SetHitObject(hits[i].collider.gameObject);
                 Destroy(hole.gameObject, hole.lifeTime);
             }
         }
@@ -162,6 +233,7 @@ public class PlayerShoot : MonoBehaviour {
             else
                 guns[i].gameObject.SetActive(false);
         }
+        shootPos.GetComponent<MouseLook>().maxRecoil = currentGun.recoil.recoilPower * 3f;
     }
 
     float CalculateDamage(float distToTarget_) {
@@ -204,5 +276,29 @@ public class PlayerShoot : MonoBehaviour {
         randomForward.y += Random.Range(-firingSpreadRadius, firingSpreadRadius);
         randomForward.z += Random.Range(-firingSpreadRadius, firingSpreadRadius);
         return randomForward.normalized;
+    }
+
+    bool CanReload() {
+        //conditions:
+        //not meleeing
+        //not running
+
+        //cancels:
+        //shoot
+        //run
+
+        return true;
+    }
+
+    bool CanShoot() {
+        //conditions:
+        //not running
+        //not meleeing
+        //not reloading
+
+        //cancels
+        //running (with delay)
+
+        return true;
     }
 }
