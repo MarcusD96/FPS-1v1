@@ -440,7 +440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5100397796180211401
 Transform:
   m_ObjectHideFlags: 0
@@ -477,12 +477,15 @@ MonoBehaviour:
   maxRange: 70
   adsZoom: 1.5
   adsSpeed: 5
+  hipFireBaseSpread: 0.05
   hipFireMaxSpread: 0.05
+  recoveryTime: 6
   magazineSize: 30
   penetration: 1
   isAuto: 1
   canReload: 0
   maxSpread: 0
+  soundName: Rifle Shot
   model: {fileID: 1988887382678975540}
   muzzleFlash: {fileID: 97257573060961120}
   bulletCasingPrefab: {fileID: -6801826427072952609, guid: 8c7077c6594aff34582b8e3eb815c827, type: 3}
@@ -631,7 +634,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6815635026297212683}
   m_LocalRotation: {x: 0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1.9629993, y: 0.5357, z: 0.03810048}
+  m_LocalPosition: {x: 1.1791, y: 0.5357, z: 0.019}
   m_LocalScale: {x: 1, y: 1, z: -1}
   m_Children:
   - {fileID: 2911189030885313270}
@@ -692,6 +695,10 @@ PrefabInstance:
     - target: {fileID: 8831516635813399623, guid: ce59867a6ebfdf94f8faab6c45950592, type: 3}
       propertyPath: m_Name
       value: Muzzle Flash
+      objectReference: {fileID: 0}
+    - target: {fileID: 8831516635813399623, guid: ce59867a6ebfdf94f8faab6c45950592, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce59867a6ebfdf94f8faab6c45950592, type: 3}

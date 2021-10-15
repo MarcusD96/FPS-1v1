@@ -6,68 +6,74 @@ public class Crosshair : MonoBehaviour {
     public PlayerShoot playerShoot;
     public RectTransform hashUp, hashLeft, hashDown, hashRight; //y, x, -y, -x
 
-    float originalPos;
+    float centerdPos;
 
     private void Start() {
-        originalPos = hashUp.localPosition.y;
+        centerdPos = hashUp.localPosition.y;
     }
 
     private void Update() {
         Vector3 pos = hashUp.localPosition;
 
+        //is zoomed in
         if(playerShoot.zoom.maxZoom) {
-            pos.y = originalPos;
+            pos.y = centerdPos;
             hashUp.localPosition = pos;
 
             pos = hashLeft.localPosition;
-            pos.x = originalPos;
+            pos.x = centerdPos;
             hashLeft.localPosition = pos;
 
             pos = hashDown.localPosition;
-            pos.y = -originalPos;
+            pos.y = -centerdPos;
             hashDown.localPosition = pos;
 
             pos = hashRight.localPosition;
-            pos.x = -originalPos;
+            pos.x = -centerdPos;
             hashRight.localPosition = pos;
             return;
         }
 
+        //is sniper
         if(playerShoot.GetCurrentGun().maxSpread) {
-            float spreadFactor = playerShoot.GetCurrentGun().hipFireMaxSpread * 1000;
+            float spreadFactor = playerShoot.GetCurrentGun().hipFireBaseSpread * 1000;
 
-            pos.y = originalPos + spreadFactor;
+            pos.y = centerdPos + spreadFactor;
             hashUp.localPosition = pos;
 
             pos = hashLeft.localPosition;
-            pos.x = originalPos + spreadFactor;
+            pos.x = centerdPos + spreadFactor;
             hashLeft.localPosition = pos;
 
             pos = hashDown.localPosition;
-            pos.y = -originalPos - spreadFactor;
+            pos.y = -centerdPos - spreadFactor;
             hashDown.localPosition = pos;
 
             pos = hashRight.localPosition;
-            pos.x = -originalPos - spreadFactor;
+            pos.x = -centerdPos - spreadFactor;
             hashRight.localPosition = pos;
             return;
         }
 
-        float spread = playerShoot.firingSpreadRadius * 1000;
+        //increasing hash spread
+        {
+            float spread = playerShoot.firingSpreadRadius * 1000;
+            float baseSpread = playerShoot.currentGun.hipFireBaseSpread * 1000;
 
-        pos.y = originalPos + spread;
-        hashUp.localPosition = pos;
+            pos.y = baseSpread + spread;
+            hashUp.localPosition = pos;
 
-        pos = hashLeft.localPosition;
-        pos.x = originalPos + spread;
-        hashLeft.localPosition = pos;
+            pos = hashLeft.localPosition;
+            pos.x = baseSpread + spread;
+            hashLeft.localPosition = pos;
 
-        pos = hashDown.localPosition;
-        pos.y = -originalPos - spread;
-        hashDown.localPosition = pos;
+            pos = hashDown.localPosition;
+            pos.y = -baseSpread - spread;
+            hashDown.localPosition = pos;
 
-        pos = hashRight.localPosition;
-        pos.x = -originalPos - spread;
-        hashRight.localPosition = pos;
+            pos = hashRight.localPosition;
+            pos.x = -baseSpread - spread;
+            hashRight.localPosition = pos;
+        }
     }
 }

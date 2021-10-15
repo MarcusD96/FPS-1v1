@@ -16,19 +16,15 @@ public class SettingsMenu : MonoBehaviour {
     }
 
     public void SetFOV() {
-        Settings.FOV = FOVSlider.value;
-        FOVText.text = Settings.FOV.ToString();
-    }
-
-    public void ApplySettingsToPlayer() {
-        //FindObjectOfType
+        Settings.FOV_Base = FOVSlider.value;
+        FOVText.text = Settings.FOV_Base.ToString();
     }
 
     private void Start() {
         sensitivitySlider.value = Settings.Sensitivity;
         sensitivityText.text = Settings.Sensitivity.ToString();
-        FOVSlider.value = Settings.FOV;
-        FOVText.text = Settings.FOV.ToString();
+        FOVSlider.value = Settings.FOV_Base;
+        FOVText.text = Settings.FOV_Base.ToString();
     }
 
     private void Update() {
@@ -42,7 +38,6 @@ public class SettingsMenu : MonoBehaviour {
                 Time.timeScale = 1;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
-                ApplySettingsToPlayer();
             }
             settingsPanel.SetActive(!settingsPanel.activeSelf);
             Settings.Paused = !Settings.Paused;

@@ -5197,12 +5197,15 @@ MonoBehaviour:
   maxRange: 40
   adsZoom: 1.25
   adsSpeed: 5
+  hipFireBaseSpread: 0.03
   hipFireMaxSpread: 0.03
+  recoveryTime: 10
   magazineSize: 15
   penetration: 1
   isAuto: 0
   canReload: 0
   maxSpread: 0
+  soundName: Pistol Shot
   model: {fileID: 2353851950885035025}
   muzzleFlash: {fileID: 9039303826372905119}
   bulletCasingPrefab: {fileID: -2324815831994801041, guid: d121f1f487b5a7949b8fcbc9ef6643d0, type: 3}

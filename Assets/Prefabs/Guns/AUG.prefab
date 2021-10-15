@@ -58,6 +58,7 @@ MonoBehaviour:
   adsZoom: 1.5
   adsSpeed: 5
   hipFireMaxSpread: 0.03
+  recoveryTime: 0.01
   magazineSize: 42
   penetration: 1
   isAuto: 1

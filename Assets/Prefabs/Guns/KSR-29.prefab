@@ -55,12 +55,15 @@ MonoBehaviour:
   maxRange: 120
   adsZoom: 2.5
   adsSpeed: 2.5
+  hipFireBaseSpread: 0.2
   hipFireMaxSpread: 0.1
+  recoveryTime: 10
   magazineSize: 10
   penetration: 5
   isAuto: 0
   canReload: 0
-  maxSpread: 1
+  maxSpread: 0
+  soundName: Sniper Shot
   model: {fileID: 3200405994284791490}
   muzzleFlash: {fileID: 6146991839713261528}
   bulletCasingPrefab: {fileID: -1793572164128123751, guid: 826c42d20db276343815d8e268f30bc0, type: 3}

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour {
@@ -14,6 +13,11 @@ public class PlayerManager : MonoBehaviour {
             return;
         }
         Instance = this;    
+    }
+
+    private void LateUpdate() {
+        if(!player)
+            player = FindObjectOfType<Player>();
     }
     #endregion
 

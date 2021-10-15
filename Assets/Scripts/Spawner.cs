@@ -29,9 +29,7 @@ public class Spawner : MonoBehaviour {
                     i--;
                 }
             }
-            GameObject g = Instantiate(enemyPrefab, spawns[r].GetPos(), Quaternion.identity);
-            spawns[r].enemy = g;
-            g.transform.SetParent(transform);
+            GameObject g = Instantiate(enemyPrefab, spawns[r].GetPos(), spawns[r].transform.rotation);
             return;
         }
         currentSpawnTime -= Time.deltaTime;

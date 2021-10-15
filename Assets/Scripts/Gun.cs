@@ -1,11 +1,13 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Gun : MonoBehaviour {
 
-    public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireMaxSpread;
+    public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime;
     public int magazineSize, penetration;
     public bool isAuto, canReload, maxSpread;
+    public string soundName;
 
     public GameObject model;
     public ParticleSystem muzzleFlash;
@@ -49,6 +51,7 @@ public class Gun : MonoBehaviour {
     public void Fire() {
         if(currentAmmo <= 0) {
             Reload();
+            return;
         }
         recoil.StartRecoil();
         currentAmmo--;
@@ -79,10 +82,10 @@ public class Gun : MonoBehaviour {
     }
 
     public float GetSensitivity() {
-        return Settings.Sensitivity * (GetZoomFOV() / Settings.FOV);
+        return Settings.Sensitivity * (GetZoomFOV() / Settings.FOV_Current);
     }
 
     public float GetZoomFOV() {
-        return Settings.FOV / adsZoom;
+        return Settings.FOV_Current / adsZoom;
     }
 }

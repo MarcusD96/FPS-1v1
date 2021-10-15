@@ -25,7 +25,7 @@ public class PlayerZoom : MonoBehaviour {
 
     public void ResetZoom() {
         mouseLook.mouseSensitivity = Settings.Sensitivity;
-        cam.fieldOfView = Settings.FOV;
+        cam.fieldOfView = Settings.FOV_Current;
         fovTracker = 0;
         playerShoot.currentGun.model.SetActive(true);
         crossHair.SetActive(true);
@@ -48,7 +48,7 @@ public class PlayerZoom : MonoBehaviour {
             fovTracker += playerShoot.currentGun.adsSpeed * Time.deltaTime;
 
             mouseLook.mouseSensitivity = Mathf.Lerp(Settings.Sensitivity, playerShoot.currentGun.GetSensitivity(), fovTracker * 2);
-            cam.fieldOfView = Mathf.Lerp(Settings.FOV, playerShoot.currentGun.GetZoomFOV(), fovTracker);
+            cam.fieldOfView = Mathf.Lerp(Settings.FOV_Current, playerShoot.currentGun.GetZoomFOV(), fovTracker);
         }
         else if(Input.GetMouseButtonUp(1)) {
             isZoomingIn = false;
@@ -57,13 +57,13 @@ public class PlayerZoom : MonoBehaviour {
         else {
             if(zoomedOut) {
                 mouseLook.mouseSensitivity = Settings.Sensitivity;
-                cam.fieldOfView = Settings.FOV;
+                cam.fieldOfView = Settings.FOV_Current;
             }
         }
 
-        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, playerShoot.currentGun.GetZoomFOV(), Settings.FOV);
+        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, playerShoot.currentGun.GetZoomFOV(), Settings.FOV_Current);
 
-        if(cam.fieldOfView <= Settings.FOV - ((Settings.FOV - playerShoot.currentGun.GetZoomFOV()) * 0.75f)) {
+        if(cam.fieldOfView <= Settings.FOV_Current - ((Settings.FOV_Current - playerShoot.currentGun.GetZoomFOV()) * 0.75f)) {
             maxZoom = true;
             if(playerShoot.currentGun.maxSpread) {
                 playerShoot.currentGun.model.SetActive(false);
@@ -79,14 +79,14 @@ public class PlayerZoom : MonoBehaviour {
     bool zoomedOut = false;
     IEnumerator ZoomOut() {
         zoomedOut = false;
-        while(cam.fieldOfView <= Settings.FOV) {
+        while(cam.fieldOfView <= Settings.FOV_Current) {
 
             fovTracker -= playerShoot.currentGun.adsSpeed * 2 * Time.deltaTime;
 
             mouseLook.mouseSensitivity = Mathf.Lerp(Settings.Sensitivity, playerShoot.currentGun.GetSensitivity(), fovTracker);
-            cam.fieldOfView = Mathf.Lerp(Settings.FOV, playerShoot.currentGun.GetZoomFOV(), fovTracker);
+            cam.fieldOfView = Mathf.Lerp(Settings.FOV_Current, playerShoot.currentGun.GetZoomFOV(), fovTracker);
 
-            if(cam.fieldOfView <= Settings.FOV - ((Settings.FOV - playerShoot.currentGun.GetZoomFOV()) * 0.25f)) {
+            if(cam.fieldOfView <= Settings.FOV_Current - ((Settings.FOV_Current - playerShoot.currentGun.GetZoomFOV()) * 0.25f)) {
                 if(playerShoot.currentGun.maxSpread) {
                     playerShoot.currentGun.model.SetActive(true);
                     crossHair.SetActive(true);

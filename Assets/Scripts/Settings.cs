@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 public static class Settings {
@@ -8,7 +7,13 @@ public static class Settings {
     public static float Sensitivity = 300;
 
     [Range(30, 120)]
-    public static float FOV = 60;
+    public static float FOV_Current = 60;
+
+    public static float FOV_Base = 60;
 
     public static bool Paused = false;
+
+    public static float Sounds = 3f;
+
+    public static float Music;
 }
