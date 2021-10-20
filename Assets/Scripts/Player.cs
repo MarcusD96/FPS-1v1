@@ -1,14 +1,25 @@
 ﻿
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
     public float hp;
+    public int points;
+
     public bool isCrouching;
     public float healSpeed, healDelayTime;
+
+    public Transform handPos;
     public Animator animator;
     public Image damageVignette;
+
+    [Header("UI Elements")]
+    public TextMeshProUGUI pointsText;
+    public TextMeshProUGUI waveNum;
+    public GameObject buyWeapon;
+    public TextMeshProUGUI buyWeaponText;
 
     float startHp, timeToHealStart = 0;
 
@@ -45,6 +56,8 @@ public class Player : MonoBehaviour {
         var hpPercent = hp / startHp;
         dmgColor.a = Mathf.Lerp(0.4f, 0f, hpPercent);
         damageVignette.color = dmgColor;
+
+        pointsText.text = "Points: " + points.ToString();
 
         Heal();
         Crouch();

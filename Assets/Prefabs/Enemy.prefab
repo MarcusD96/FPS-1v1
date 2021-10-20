@@ -686,6 +686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 120
+  pointsWorth: 100
   damage: 25
   attackRate: 1
   attackRange: 2.5
@@ -701,6 +702,9 @@ MonoBehaviour:
   - {fileID: 2129953891285307775}
   - {fileID: 2851953907107108594}
   animator: {fileID: 6701068698455890068}
+  isDead: 0
+  isAttacking: 0
+  nextAttack: 0
 --- !u!1 &1964422216294390597
 GameObject:
   m_ObjectHideFlags: 0

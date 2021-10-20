@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class PlayerShoot : MonoBehaviour {
     public DamageIndicator indicator;
     public LayerMask shootableLayerMask;
     public Gun currentGun;
-    public Gun[] guns;
+    public List<Gun> guns;
     public TextMeshProUGUI ammoText;
     public Melee meleeComp;
     public PlayerMovement moveComp;
@@ -20,7 +21,9 @@ public class PlayerShoot : MonoBehaviour {
     public float firingSpreadRadius;
 
     float nextFire = 0f;
-    int gunIndex = 2;
+
+    [HideInInspector]
+    public int gunIndex = 0;
 
     private void Awake() {
         zoom = GetComponent<PlayerZoom>();
@@ -41,8 +44,12 @@ public class PlayerShoot : MonoBehaviour {
     void Shoot() {
         nextFire -= Time.deltaTime;
 
-        ammoText.text = currentGun.currentAmmo.ToString() + "/" + currentGun.magazineSize;
+        ammoText.text = currentGun.currentAmmo.ToString() + "/" + currentGun.remainingAmmo;
 
+        if(currentGun.currentAmmo <= 0) {
+            //make click sound
+            return;
+        }
 
         if(nextFire <= -0.1f && !currentGun.maxSpread)
             firingSpreadRadius = Mathf.Lerp(firingSpreadRadius, 0, currentGun.recoveryTime * Time.deltaTime);
@@ -58,7 +65,6 @@ public class PlayerShoot : MonoBehaviour {
             if(Input.GetButton("Shoot")) {
                 if(nextFire <= 0) {
                     Fire();
-                    AudioManager.instance.PlayEffect(AudioManager.instance.sounds, currentGun.soundName, transform.position);
                     CalculateSpread();
                     nextFire = 1 / currentGun.fireRate;
                     return;
@@ -69,7 +75,6 @@ public class PlayerShoot : MonoBehaviour {
             if(Input.GetButtonDown("Shoot")) {
                 if(nextFire <= 0) {
                     Fire();
-                    AudioManager.instance.PlayEffect(AudioManager.instance.sounds, currentGun.soundName, transform.position);
                     CalculateSpread();
                     nextFire = 1 / currentGun.fireRate;
                     return;
@@ -79,6 +84,8 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     void Fire() {
+        AudioManager.instance.Play(currentGun.soundName);
+
         CameraShaker.Instance.ShakeOnce(currentGun.recoil.recoilPower * 10, 8f, .1f, currentGun.recoil.recoilPower);
 
         currentGun.Fire();
@@ -106,19 +113,21 @@ public class PlayerShoot : MonoBehaviour {
                 Destroy(hitHole.gameObject, hitHole.lifeTime);
                 break;
             }
-
-            if(i > 0 && hits[i].collider.transform.parent == hits[i - 1].collider.transform.parent) {
-                p++;
-                continue;
+            if(i > 0) {
+                if(hits[i].collider.transform.root.GetComponent<Enemy>() == hits[i - 1].collider.transform.root.GetComponent<Enemy>()) {
+                    p++;
+                    continue;
+                }
             }
 
             Enemy e;
             if(hits[i].collider.transform.root.TryGetComponent(out e)) {
                 float d = Vector3.Distance(transform.position, hits[i].point);
                 float damageActual = CalculateDamage(d);
-                damageActual /= i + 1;
+                damageActual -= damageActual * (0.1f * i);
 
-                if(hits[i].collider == e.head) {
+                if(hits[i].collider
+                    == e.head) {
                     damageActual *= 2.0f;
                     var ind = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
                     ind.transform.SetParent(indicatorPos);
@@ -160,7 +169,7 @@ public class PlayerShoot : MonoBehaviour {
             currentGun.isReloading = false;
             gunIndex--;
             if(gunIndex < 0)
-                gunIndex = guns.Length - 1;
+                gunIndex = guns.Count - 1;
 
             zoom.ResetZoom();
             EquipWeapon();
@@ -168,7 +177,7 @@ public class PlayerShoot : MonoBehaviour {
         if(Input.GetAxis("Mouse ScrollWheel") < 0) {
             currentGun.isReloading = false;
             gunIndex++;
-            if(gunIndex >= guns.Length)
+            if(gunIndex >= guns.Count)
                 gunIndex = 0;
 
             zoom.ResetZoom();
@@ -176,13 +185,13 @@ public class PlayerShoot : MonoBehaviour {
         }
     }
 
-    void EquipWeapon() {
+    public void EquipWeapon() {
         if(meleeComp.isMeleeing)
             return;
 
 
         meleeComp.currentGun = currentGun = guns[gunIndex];
-        for(int i = 0; i < guns.Length; i++) {
+        for(int i = 0; i < guns.Count; i++) {
             if(i == gunIndex)
                 guns[i].gameObject.SetActive(true);
             else

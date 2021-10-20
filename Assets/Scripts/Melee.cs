@@ -36,7 +36,7 @@ public class Melee : MonoBehaviour {
 
             StartCoroutine(StopForMelee());
 
-            GetComponent<PlayerShoot>().currentGun.GetComponent<Animator>().SetTrigger("Melee");
+            GetComponent<PlayerShoot>().currentGun.animator.SetTrigger("Melee");
 
             CameraShaker.Instance.ShakeOnce(6f, 8f, .15f, .15f);
             nextMeleeTime = 1 / meleeRate;

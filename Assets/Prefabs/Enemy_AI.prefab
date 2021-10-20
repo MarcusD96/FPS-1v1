@@ -1868,7 +1868,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 488fe94a284f1144c837156b44a26737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 200
+  hp: 100
+  pointsWorth: 50
   damage: 25
   attackRate: 0.6666667
   attackRange: 3

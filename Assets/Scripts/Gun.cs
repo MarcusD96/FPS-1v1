@@ -5,7 +5,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour {
 
     public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime;
-    public int magazineSize, penetration;
+    public int magazineSize, penetration, remainingAmmo;
     public bool isAuto, canReload, maxSpread;
     public string soundName;
 
@@ -26,8 +26,8 @@ public class Gun : MonoBehaviour {
         isReloading = false;
         canReload = true;
         recoil = GetComponent<Recoil>();
-        animator = GetComponent<Animator>();
         currentAmmo = magazineSize + 1;
+        remainingAmmo = magazineSize * 5;
     }
 
     private void Update() {
@@ -62,22 +62,45 @@ public class Gun : MonoBehaviour {
     }
 
     public void Reload() {
+        if(remainingAmmo <= 0)
+            return;
         StartCoroutine(ReloadTime());
     }
 
     IEnumerator ReloadTime() {
         isReloading = true;
+
         animator.SetTrigger("Reload");
         animator.ResetTrigger("Fire");
+
         float t = reloadTime + Time.time;
         while(Time.time < t) {
             yield return null;
         }
 
-        if(currentAmmo > 0)
+        if(remainingAmmo < magazineSize) {
+            if(currentAmmo - magazineSize + 1 < remainingAmmo && currentAmmo + remainingAmmo <= magazineSize + 1) {
+                currentAmmo += remainingAmmo;
+                remainingAmmo = 0;
+                isReloading = false;
+                yield break;
+            }
+        }
+
+
+        if(currentAmmo > 0) {
+            remainingAmmo -= magazineSize + 1 - currentAmmo;
             currentAmmo = magazineSize + 1;
-        else
+
+        }
+        else {
+            remainingAmmo -= magazineSize - currentAmmo;
             currentAmmo = magazineSize;
+        }
+
+        if(remainingAmmo < 0)
+            remainingAmmo = 0;
+
         isReloading = false;
     }
 

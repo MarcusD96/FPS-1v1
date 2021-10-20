@@ -12,15 +12,18 @@ public class PlayerManager : MonoBehaviour {
             Destroy(this);
             return;
         }
-        Instance = this;    
+        Instance = this;
     }
 
     private void LateUpdate() {
-        if(!player)
+        if(player == null)
             player = FindObjectOfType<Player>();
     }
     #endregion
 
     public Player player;
 
+    private void Start() {
+        Application.targetFrameRate = 150;
+    }
 }
