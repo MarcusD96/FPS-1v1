@@ -65,7 +65,7 @@ public class PlayerZoom : MonoBehaviour {
 
         if(cam.fieldOfView <= Settings.FOV_Current - ((Settings.FOV_Current - playerShoot.currentGun.GetZoomFOV()) * 0.75f)) {
             maxZoom = true;
-            if(playerShoot.currentGun.maxSpread) {
+            if(playerShoot.currentGun.maxSpread && !playerShoot.currentGun.isShotgun) {
                 playerShoot.currentGun.model.SetActive(false);
                 crossHair.SetActive(false);
                 sniperScope.SetActive(true);

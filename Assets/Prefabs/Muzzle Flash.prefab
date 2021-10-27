@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 186904772060055468}
   - component: {fileID: 3145514917757070906}
   - component: {fileID: 6949199499566979518}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Muzzle Flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ Transform:
   - {fileID: 8348853511365493631}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &3145514917757070906
 ParticleSystem:
   m_ObjectHideFlags: 0

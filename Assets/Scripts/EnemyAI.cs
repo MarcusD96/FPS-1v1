@@ -8,6 +8,8 @@ public class EnemyAI : MonoBehaviour {
     public float lookRadius;
     public LayerMask playerLayer;
 
+    public float chanceToRun = 0;
+
     Transform target;
     NavMeshAgent agent;
     Enemy enemy;
@@ -19,7 +21,7 @@ public class EnemyAI : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         target = PlayerManager.Instance.player.transform;
 
-        if(Random.Range(0, 4) == 0) {
+        if(Random.Range(0, Mathf.RoundToInt(1f/chanceToRun)) == 0) {
             agent.speed = agent.speed * 2;
             enemy.animator.SetBool("IsRunner", true);
         }

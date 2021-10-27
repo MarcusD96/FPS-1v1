@@ -6,8 +6,11 @@ public class Gun : MonoBehaviour {
 
     public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime;
     public int magazineSize, penetration, remainingAmmo;
-    public bool isAuto, canReload, maxSpread;
+    public bool isAuto, canReload, maxSpread, isShotgun;
     public string soundName;
+    public int shots;
+
+    public float headShotMult, torsoShotMult;
 
     public GameObject model;
     public ParticleSystem muzzleFlash;
@@ -26,15 +29,17 @@ public class Gun : MonoBehaviour {
         isReloading = false;
         canReload = true;
         recoil = GetComponent<Recoil>();
-        currentAmmo = magazineSize + 1;
-        remainingAmmo = magazineSize * 5;
+        currentAmmo = magazineSize;
+        if(!isShotgun)
+            currentAmmo += 1;
+        remainingAmmo = magazineSize * 10;
     }
 
     private void Update() {
         if(canReload == false)
             return;
 
-        if(!isReloading && currentAmmo != magazineSize + 1) {
+        if(!isReloading && currentAmmo < magazineSize + 1) {
             if(Input.GetKeyDown(KeyCode.R)) {
                 Reload();
             }
@@ -64,10 +69,17 @@ public class Gun : MonoBehaviour {
     public void Reload() {
         if(remainingAmmo <= 0)
             return;
-        StartCoroutine(ReloadTime());
+
+        if(!isShotgun)
+            StartCoroutine(ReloadTime());
+        else {
+            if(!isReloading)
+                StartCoroutine(ReloadShotGun());
+        }
     }
 
     IEnumerator ReloadTime() {
+        print("reload");
         isReloading = true;
 
         animator.SetTrigger("Reload");
@@ -87,7 +99,6 @@ public class Gun : MonoBehaviour {
             }
         }
 
-
         if(currentAmmo > 0) {
             remainingAmmo -= magazineSize + 1 - currentAmmo;
             currentAmmo = magazineSize + 1;
@@ -102,6 +113,41 @@ public class Gun : MonoBehaviour {
             remainingAmmo = 0;
 
         isReloading = false;
+    }
+
+    IEnumerator ReloadShotGun() {
+        isReloading = true;
+        animator.SetBool("Reloading", isReloading);
+        animator.ResetTrigger("Fire");
+        yield return null;
+
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
+
+        if(currentAmmo < 1) {
+            while(currentAmmo < magazineSize) {
+                yield return new WaitForSeconds(reloadTime);
+                if(remainingAmmo > 0) {
+                    currentAmmo += 1;
+                    remainingAmmo -= 1;
+                }
+                else
+                    break;
+            }
+        }
+        else {
+            while(currentAmmo < magazineSize + 1) {
+                yield return new WaitForSeconds(reloadTime);
+                if(remainingAmmo > 0) {
+                    currentAmmo += 1;
+                    remainingAmmo -= 1;
+                }
+                else
+                    break;
+            }
+        }
+
+        isReloading = false;
+        animator.SetBool("Reloading", isReloading);
     }
 
     public float GetSensitivity() {

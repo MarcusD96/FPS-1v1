@@ -7,10 +7,9 @@ using EZCameraShake;
 
 public class PlayerShoot : MonoBehaviour {
 
-    public Transform shootPos, indicatorPos;
+    public Transform shootPos;
     public GameObject objectImpactEffect, bloodHitEffect;
     public BulletHole bulletHole;
-    public DamageIndicator indicator;
     public LayerMask shootableLayerMask;
     public Gun currentGun;
     public List<Gun> guns;
@@ -83,6 +82,7 @@ public class PlayerShoot : MonoBehaviour {
         }
     }
 
+    RaycastHit[] hits;
     void Fire() {
         AudioManager.instance.Play(currentGun.soundName);
 
@@ -92,75 +92,67 @@ public class PlayerShoot : MonoBehaviour {
 
         currentGun.muzzleFlash.Play();
 
-        Ray ray = new Ray(shootPos.position, GetRandomForward());
-        RaycastHit[] hits = Physics.RaycastAll(ray, 1000, shootableLayerMask);
-        System.Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
+        for(int i = 0; i < currentGun.shots; i++) {
+            Ray ray = new Ray(shootPos.position, GetRandomForward());
+            hits = Physics.RaycastAll(ray, 100, shootableLayerMask);
+            System.Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
 
-        int p;
-        if(hits.Length <= 0)
-            return;
-        if(hits.Length <= currentGun.penetration)
-            p = hits.Length;
-        else
-            p = currentGun.penetration;
+            int p;
+            if(hits.Length <= 0)
+                return;
+            if(hits.Length <= currentGun.penetration)
+                p = hits.Length;
+            else
+                p = currentGun.penetration;
 
-        for(int i = 0; i < p; i++) {
-            if(hits[i].collider.gameObject.layer == LayerMask.NameToLayer("Ground")) {
-                var hitEffect = Instantiate(objectImpactEffect, hits[i].point, Quaternion.LookRotation(hits[i].normal));
-                Destroy(hitEffect, 1f);
-                var hitHole = Instantiate(bulletHole, hits[i].point + (hits[i].normal * 0.01f), Quaternion.LookRotation(hits[i].normal));
-                hitHole.SetHitObject(hits[i].collider.gameObject);
-                Destroy(hitHole.gameObject, hitHole.lifeTime);
-                break;
-            }
-            if(i > 0) {
-                if(hits[i].collider.transform.root.GetComponent<Enemy>() == hits[i - 1].collider.transform.root.GetComponent<Enemy>()) {
+            List<Enemy> hitList = new List<Enemy>();
+            for(int h = 0; h < p; h++) {
+                if(hits[h].collider.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+                    var hitEffect = Instantiate(objectImpactEffect, hits[h].point, Quaternion.LookRotation(hits[h].normal));
+                    Destroy(hitEffect, 1f);
+                    var hitHole = Instantiate(bulletHole, hits[h].point + (hits[h].normal * 0.01f), Quaternion.LookRotation(hits[h].normal));
+                    hitHole.SetHitObject(hits[h].collider.gameObject);
+                    Destroy(hitHole.gameObject, hitHole.lifeTime);
+                    break;
+                }
+                if(hitList.Contains(hits[h].collider.transform.root.GetComponent<Enemy>())) {
                     p++;
                     continue;
                 }
-            }
 
-            Enemy e;
-            if(hits[i].collider.transform.root.TryGetComponent(out e)) {
-                float d = Vector3.Distance(transform.position, hits[i].point);
-                float damageActual = CalculateDamage(d);
-                damageActual -= damageActual * (0.1f * i);
+                Enemy e;
+                if(hits[h].collider.transform.root.TryGetComponent(out e)) {
+                    hitList.Add(e);
+                    float d = Vector3.Distance(transform.position, hits[h].point);
+                    float damageActual = CalculateDamage(d);
+                    for(int ii = 0; ii < h; ii++) {
+                        damageActual -= damageActual * 0.05f;
+                    }
 
-                if(hits[i].collider
-                    == e.head) {
-                    damageActual *= 2.0f;
-                    var ind = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
-                    ind.transform.SetParent(indicatorPos);
-                    if(e.hp - damageActual <= 0)
-                        ind.Initialize(damageActual, true, true);
-                    else
-                        ind.Initialize(damageActual, true, false);
-                    e.Damage(damageActual);
-                }
-                else {
-                    foreach(var b in e.body) {
-                        if(hits[i].collider == b) {
-                            var ind = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
-                            ind.transform.SetParent(indicatorPos);
-                            if(e.hp - damageActual <= 0)
-                                ind.Initialize(damageActual, false, true);
-                            else
-                                ind.Initialize(damageActual, false, false);
-                            e.Damage(damageActual);
-                            break;
+                    if(hits[h].collider == e.head) {
+                        damageActual *= currentGun.headShotMult;
+                        e.DamageBody(damageActual, true);
+                    }
+                    else {
+                        foreach(var b in e.body) {
+                            if(hits[h].collider == b) {
+                                damageActual *= currentGun.torsoShotMult;
+                                e.DamageBody(damageActual, false);
+                                break;
+                            }
                         }
                     }
                 }
+
+
+                if(hits[h].rigidbody != null) {
+                    hits[h].rigidbody.AddForce(-hits[h].normal * currentGun.impactForce);
+                }
+
+                //effects
+                var effect = Instantiate(bloodHitEffect, hits[h].point, Quaternion.LookRotation(hits[h].normal));
+                Destroy(effect, 1f);
             }
-
-
-            if(hits[i].rigidbody != null) {
-                hits[i].rigidbody.AddForce(-hits[i].normal * currentGun.impactForce);
-            }
-
-            //effects
-            var effect = Instantiate(bloodHitEffect, hits[i].point, Quaternion.LookRotation(hits[i].normal));
-            Destroy(effect, 1f);
         }
     }
 
@@ -219,7 +211,8 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     void CalculateSpread() {
-        if(zoom.maxZoom) {
+        if(currentGun.isShotgun) { }
+        else if(zoom.maxZoom) {
             firingSpreadRadius = 0;
             return;
         }
@@ -234,15 +227,14 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     Vector3 GetRandomForward() {
-        Vector3 randomForward = shootPos.forward;
         if(!currentGun.maxSpread) {
             if(firingSpreadRadius <= 0.001f || zoom.maxZoom)
-                return randomForward;
+                return shootPos.forward;
         }
-        else
-            if(zoom.maxZoom)
-            return randomForward;
+        else if(zoom.maxZoom && !currentGun.isShotgun) //middle
+            return shootPos.forward;
 
+        Vector3 randomForward = shootPos.forward;
         var min = -firingSpreadRadius - currentGun.hipFireBaseSpread;
         var max = firingSpreadRadius + currentGun.hipFireBaseSpread;
         randomForward.x += Random.Range(min, max);

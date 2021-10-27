@@ -5400,10 +5400,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddcf93ca51bc13488dfb74cfc93b70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 6.6
+  fireRate: 10.411667
   impactForce: 100
-  damage: 30
-  minDamage: 5
+  damage: 20
+  minDamage: 20
   reloadTime: 1.5
   minRange: 10
   maxRange: 40
@@ -5412,12 +5412,16 @@ MonoBehaviour:
   hipFireBaseSpread: 0.03
   hipFireMaxSpread: 0.03
   recoveryTime: 10
-  magazineSize: 15
-  penetration: 2
+  magazineSize: 7
+  penetration: 3
+  remainingAmmo: 0
   isAuto: 0
   canReload: 0
   maxSpread: 0
   soundName: Pistol Shot
+  shots: 1
+  headShotMult: 3.5
+  torsoShotMult: 1.25
   model: {fileID: 3338524627488443972}
   muzzleFlash: {fileID: 8326121504471390922}
   bulletCasingPrefab: {fileID: -2324815831994801041, guid: d121f1f487b5a7949b8fcbc9ef6643d0, type: 3}

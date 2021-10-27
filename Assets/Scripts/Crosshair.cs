@@ -16,7 +16,7 @@ public class Crosshair : MonoBehaviour {
         Vector3 pos = hashUp.localPosition;
 
         //is zoomed in
-        if(playerShoot.zoom.maxZoom) {
+        if(playerShoot.zoom.maxZoom && !playerShoot.currentGun.isShotgun) {
             pos.y = centerdPos;
             hashUp.localPosition = pos;
 

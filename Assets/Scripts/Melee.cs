@@ -1,18 +1,17 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using EZCameraShake;
 
 public class Melee : MonoBehaviour {
 
+    public float meleeRate, meleeDist, meleeDamage;
+    public float impactForce;
+
     public LayerMask enemyLayer;
-    public DamageIndicator indicator;
-    public Transform meleePos, indicatorPos;
+    public Transform meleePos;
     public Gun currentGun;
     public PlayerShoot shootComp;
 
-    public float meleeRate, meleeDist;
-    public float impactForce;
 
     [HideInInspector]
     public bool isMeleeing;
@@ -32,7 +31,7 @@ public class Melee : MonoBehaviour {
     }
 
     void DoMelee() {
-        if(Input.GetKeyDown(KeyCode.C)) {
+        if(Input.GetKeyDown(KeyCode.Mouse4)) {
 
             StartCoroutine(StopForMelee());
 
@@ -50,13 +49,7 @@ public class Melee : MonoBehaviour {
                         continue;
                 }
                 if(hits[i].transform.root.TryGetComponent(out e)) {
-                    var ii = Instantiate(indicator, indicatorPos.position, Quaternion.identity);
-                    ii.transform.SetParent(indicatorPos);
-                    if(e.hp - 30 <= 0)
-                        ii.InitializeMelee(30, true);
-                    else
-                        ii.InitializeMelee(30, false);
-                    e.Damage(30);
+                    e.DamageMelee(meleeDamage);
                 }
             }
         }
@@ -72,15 +65,5 @@ public class Melee : MonoBehaviour {
         yield return new WaitForSeconds(1 / meleeRate);
         currentGun.canReload = true;
         isMeleeing = false;
-    }
-
-    bool CanMelee() {
-        //Conditions:
-        //not switching weapon
-
-        //Stop Actions:
-        //Shoot, Run
-
-        return true;
     }
 }

@@ -20,6 +20,8 @@ public class Player : MonoBehaviour {
     public TextMeshProUGUI waveNum;
     public GameObject buyWeapon;
     public TextMeshProUGUI buyWeaponText;
+    public GameObject buyDoor;
+    public TextMeshProUGUI buyDoorText;
 
     float startHp, timeToHealStart = 0;
 
@@ -32,7 +34,7 @@ public class Player : MonoBehaviour {
         EZCameraShake.CameraShaker.Instance.ShakeOnce(30f, 10f, .1f, .2f);
         hp -= damage_;
         if(hp <= 0)
-            UnityEngine.SceneManagement.SceneManager.LoadScene("AI Test");
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 
     void Heal() {

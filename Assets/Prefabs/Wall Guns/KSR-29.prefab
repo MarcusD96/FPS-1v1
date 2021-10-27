@@ -531,7 +531,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunName: KSR-29
-  gunPrice: 5000
+  gunPrice: 10000
+  ammoPrice: 2750
+  purchased: 0
   gunModel: {fileID: 4188182102378362150, guid: 39606380d652ce042bc7c61a3f09769d, type: 3}
   purchasedGun: {fileID: 0}
 --- !u!1 &4938539046929574995

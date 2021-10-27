@@ -126,7 +126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunName: AK-47
-  gunPrice: 2500
+  gunPrice: 5000
+  ammoPrice: 1200
+  purchased: 0
   gunModel: {fileID: 2336173444181203808, guid: 473f56a8a802dc743b76e5d20c964997, type: 3}
   purchasedGun: {fileID: 0}
 --- !u!1 &2616820004750895913

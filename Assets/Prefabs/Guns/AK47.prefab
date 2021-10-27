@@ -251,23 +251,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireRate: 10.66666
   impactForce: 100
-  damage: 20
-  minDamage: 10
+  damage: 150
+  minDamage: 100
   reloadTime: 2
-  minRange: 25
-  maxRange: 70
+  minRange: 40
+  maxRange: 75
   adsZoom: 1.5
   adsSpeed: 5
   hipFireBaseSpread: 0.05
   hipFireMaxSpread: 0.05
   recoveryTime: 6
   magazineSize: 30
-  penetration: 3
+  penetration: 5
   remainingAmmo: 0
   isAuto: 1
   canReload: 0
   maxSpread: 0
   soundName: Rifle Shot
+  shots: 1
+  headShotMult: 4
+  torsoShotMult: 1
   model: {fileID: 4319571993728030774}
   muzzleFlash: {fileID: 2392051737653890914}
   bulletCasingPrefab: {fileID: -6801826427072952609, guid: 8c7077c6594aff34582b8e3eb815c827, type: 3}

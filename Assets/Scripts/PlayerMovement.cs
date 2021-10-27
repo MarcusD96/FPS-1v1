@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour {
         float speed = lastSpeed;
 
         if(isGrounded) {
-            if(Input.GetKey(KeyCode.LeftShift) && !playerShootComp.currentGun.isReloading && !player.isCrouching && speed > 0f) {
+            if(Input.GetKey(KeyCode.LeftShift) && !playerShootComp.currentGun.isReloading && !player.isCrouching && speed > 0.01f) {
                 speed = lastSpeed = moveSpeed * 1.65f * Time.deltaTime;
                 isRunning = true;
                 Settings.FOV_Current = Mathf.Lerp(Settings.FOV_Current, Settings.FOV_Base + 20, 10f * Time.deltaTime);
