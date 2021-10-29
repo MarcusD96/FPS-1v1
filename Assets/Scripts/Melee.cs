@@ -23,7 +23,7 @@ public class Melee : MonoBehaviour {
     }
 
     private void Update() {
-        if(nextMeleeTime <= 0) {
+        if(nextMeleeTime <= 0 && !shootComp.isSwitching) {
             DoMelee();
             return;
         }
@@ -60,6 +60,9 @@ public class Melee : MonoBehaviour {
         if(currentGun.isReloading) {
             currentGun.StopAllCoroutines();
             currentGun.isReloading = false;
+            if(currentGun.isShotgun) {
+                currentGun.animator.SetBool("Reloading", currentGun.isReloading); 
+            }
         }
         currentGun.canReload = false;
         yield return new WaitForSeconds(1 / meleeRate);

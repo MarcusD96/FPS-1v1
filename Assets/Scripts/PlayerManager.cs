@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour {
 
     private void Awake() {
         if(Instance) {
-            Debug.LogError("More than 1 PlayerManager...deleting...");
+            Debug.LogWarning("More than 1 PlayerManager...deleting...");
             Destroy(this);
             return;
         }

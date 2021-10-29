@@ -23,6 +23,8 @@ public class PlayerShoot : MonoBehaviour {
 
     [HideInInspector]
     public int gunIndex = 0;
+    [HideInInspector]
+    public bool isSwitching = false;
 
     private void Awake() {
         zoom = GetComponent<PlayerZoom>();
@@ -45,18 +47,13 @@ public class PlayerShoot : MonoBehaviour {
 
         ammoText.text = currentGun.currentAmmo.ToString() + "/" + currentGun.remainingAmmo;
 
-        if(currentGun.currentAmmo <= 0) {
-            //make click sound
-            return;
-        }
-
         if(nextFire <= -0.1f && !currentGun.maxSpread)
             firingSpreadRadius = Mathf.Lerp(firingSpreadRadius, 0, currentGun.recoveryTime * Time.deltaTime);
 
         if(currentGun.maxSpread)
             firingSpreadRadius = 0;
 
-        if(meleeComp.isMeleeing || currentGun.isReloading || moveComp.isRunning) {
+        if(meleeComp.isMeleeing || currentGun.isReloading || moveComp.isRunning || isSwitching) {
             return;
         }
 
@@ -164,7 +161,10 @@ public class PlayerShoot : MonoBehaviour {
                 gunIndex = guns.Count - 1;
 
             zoom.ResetZoom();
-            EquipWeapon();
+            if(guns.Count > 1) {
+                StopAllCoroutines();
+                StartCoroutine(SwitchWeaponDelay()); 
+            }
         }
         if(Input.GetAxis("Mouse ScrollWheel") < 0) {
             currentGun.isReloading = false;
@@ -173,7 +173,10 @@ public class PlayerShoot : MonoBehaviour {
                 gunIndex = 0;
 
             zoom.ResetZoom();
-            EquipWeapon();
+            if(guns.Count > 1) {
+                StopAllCoroutines();
+                StartCoroutine(SwitchWeaponDelay());
+            }
         }
     }
 
@@ -241,5 +244,16 @@ public class PlayerShoot : MonoBehaviour {
         randomForward.y += Random.Range(min, max);
         randomForward.z += Random.Range(min, max);
         return randomForward.normalized;
+    }
+
+    IEnumerator SwitchWeaponDelay() {
+        isSwitching = true;
+
+        currentGun.animator.SetTrigger("Switch");
+        yield return new WaitForSeconds(currentGun.switchOutSpeed);
+        EquipWeapon();
+        yield return new WaitForSeconds(currentGun.switchInSpeed);
+
+        isSwitching = false;
     }
 }

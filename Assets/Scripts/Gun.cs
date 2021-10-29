@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour {
 
-    public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime;
+    public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed, switchOutSpeed;
     public int magazineSize, penetration, remainingAmmo;
     public bool isAuto, canReload, maxSpread, isShotgun;
     public string soundName;
@@ -79,7 +79,6 @@ public class Gun : MonoBehaviour {
     }
 
     IEnumerator ReloadTime() {
-        print("reload");
         isReloading = true;
 
         animator.SetTrigger("Reload");
@@ -121,7 +120,8 @@ public class Gun : MonoBehaviour {
         animator.ResetTrigger("Fire");
         yield return null;
 
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
+        //yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
+        yield return new WaitForSeconds(1f / 3f);
 
         if(currentAmmo < 1) {
             while(currentAmmo < magazineSize) {

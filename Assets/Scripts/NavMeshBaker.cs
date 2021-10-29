@@ -9,20 +9,18 @@ public class NavMeshBaker : MonoBehaviour {
 
     void Awake() {
         if(Instance) {
-            Debug.LogError("more than 1 NavMeshBaker, deleting new one");
+            Debug.LogWarning("more than 1 NavMeshBaker, deleting new one");
+            BuildMesh();
             Destroy(gameObject);
             return;
         }
         Instance = this;
+        BuildMesh();
     }
     #endregion
 
     public NavMeshSurface navMeshSurface;
     bool buildMesh = false;
-
-    private void Start() {
-        buildMesh = true;
-    }
 
     private void FixedUpdate() {
         if(buildMesh)

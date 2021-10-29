@@ -331,6 +331,8 @@ MonoBehaviour:
   hipFireBaseSpread: 0.09
   hipFireMaxSpread: 0.09
   recoveryTime: 6
+  switchInSpeed: 1
+  switchOutSpeed: 0.5
   magazineSize: 8
   penetration: 1
   remainingAmmo: 0
@@ -365,7 +367,7 @@ MonoBehaviour:
   recoil: 0.1
   maxRecoil_X: -5
   recoilSpeed: 4
-  recoilPower: 0.15
+  recoilPower: 0.5
 --- !u!1 &2203930807283033652
 GameObject:
   m_ObjectHideFlags: 0
