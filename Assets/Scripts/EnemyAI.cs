@@ -21,8 +21,8 @@ public class EnemyAI : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         target = PlayerManager.Instance.player.transform;
 
-        if(Random.Range(0, Mathf.RoundToInt(1f/chanceToRun)) == 0) {
-            agent.speed = agent.speed * 2;
+        if(Random.Range(0, Mathf.RoundToInt(1f / chanceToRun)) == 0) {
+            agent.speed *= 2f;
             enemy.animator.SetBool("IsRunner", true);
         }
         else
@@ -82,11 +82,10 @@ public class EnemyAI : MonoBehaviour {
         attack = null;
     }
 
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, lookRadius);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, enemy.attackRange);
+    public void ChangeToRunner() {
+        if(enemy.animator.GetBool("IsRunner") == false) {
+            agent.speed *= 2f;
+            enemy.animator.SetBool("IsRunner", true);
+        }
     }
-
 }

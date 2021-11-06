@@ -332,23 +332,28 @@ MonoBehaviour:
   hipFireMaxSpread: 0.09
   recoveryTime: 6
   switchInSpeed: 1
-  switchOutSpeed: 0.5
   magazineSize: 8
   penetration: 1
   remainingAmmo: 0
+  numReloadShells: 1
   isAuto: 0
   canReload: 0
   maxSpread: 1
   isShotgun: 1
+  upgraded: 0
+  primaryShot: 1
   soundName: Rifle Shot
   shots: 8
   headShotMult: 1
   torsoShotMult: 1
   model: {fileID: 2221681337189605125}
   muzzleFlash: {fileID: 619994539128162194}
+  secondaryMuzzleFlash: {fileID: 0}
   bulletCasingPrefab: {fileID: -2324815831994801041, guid: 22ae0f90e1231c447975d24472fea68d, type: 3}
-  ejectPort: {fileID: 6387302763060833580}
+  ejectPorts:
+  - {fileID: 6387302763060833580}
   animator: {fileID: 2203930807283033654}
+  upgradedGun: {fileID: 2203930807040660927, guid: 1320a0481300e4a41afc29e8aa041f67, type: 3}
   currentAmmo: 0
   recoil: {fileID: 0}
   isReloading: 0

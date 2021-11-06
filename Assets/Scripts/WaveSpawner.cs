@@ -13,7 +13,7 @@ public class WaveSpawner : MonoBehaviour {
     public Spawn[] spawns;
 
     bool waveStarted = false;
-    int waveNum = 1;
+    int waveNum = 29;
 
     List<GameObject> spawnedEnemies = new List<GameObject>();
 
@@ -23,12 +23,14 @@ public class WaveSpawner : MonoBehaviour {
     }
 
     IEnumerator SpawnWave() {
-
         FindObjectOfType<Player>().waveNum.text = waveNum.ToString();
 
         //start with delay
         waveStarted = true;
         yield return new WaitForSeconds(startDelay);
+
+        CalculateNextRound();
+        FindObjectOfType<Player>().waveNum.text = waveNum.ToString();
 
         //start spawning
         WaitForSeconds spawnDelay = new WaitForSeconds(spawnTime);
@@ -51,28 +53,34 @@ public class WaveSpawner : MonoBehaviour {
         }
 
         //wait for enemies to be killed
-        while(spawnedEnemies.Count > 0)
+        bool lastRunning = false;
+        while(spawnedEnemies.Count > 0) {
+            if(spawnedEnemies.Count == 1 && !lastRunning) {
+                lastRunning = true;
+                spawnedEnemies[0].GetComponent<EnemyAI>().ChangeToRunner();
+            }
             yield return null;
+        }
 
-        IncreaseDifficulty();
 
         waveStarted = false;
     }
 
-    void IncreaseDifficulty() {
+    void CalculateNextRound() {
         waveNum++;
 
-        if(waveNum < 10)
-            numSpawn += 2;
-        else if(waveNum < 20) {
-            numSpawn += 5;
+        if(waveNum < 10) {
+            numSpawn = 6 + ((waveNum - 1) * 2);
+            spawnTime -= 0.2f;
         }
-        else if(waveNum >= 30) {
-            numSpawn += 10;
+        else if(waveNum < 25) {
+            numSpawn = 22 + ((waveNum - 1) * 3);
+            spawnTime = 1.5f;
         }
 
-        if(spawnTime > 1.0f) {
-            spawnTime -= 0.2f;
+        else if(waveNum >= 25) {
+            numSpawn = 137 + ((waveNum - 1) * 5);
+            spawnTime = 0.75f;
         }
     }
 

@@ -44,8 +44,10 @@ public class Enemy : MonoBehaviour {
     public void DamageBody(float damage_, bool headShot) {
         hp -= damage_;
         if(hp <= 0) {
-            if(headShot)
+            if(headShot) {
                 PlayerManager.Instance.player.points += pointsWorth * 2;
+                AudioManager.instance.Play("Head Shot");
+            }
             else
                 PlayerManager.Instance.player.points += pointsWorth;
 

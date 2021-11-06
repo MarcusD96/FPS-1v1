@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour {
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void LateUpdate() {

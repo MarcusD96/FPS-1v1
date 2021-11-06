@@ -6,7 +6,6 @@ public class WallGun : MonoBehaviour {
     public string gunName;
     public int gunPrice;
     public int ammoPrice;
-    [HideInInspector]
     public bool purchased;
 
     public GameObject gunModel;

@@ -22,6 +22,8 @@ public class Player : MonoBehaviour {
     public TextMeshProUGUI buyWeaponText;
     public GameObject buyDoor;
     public TextMeshProUGUI buyDoorText;
+    public GameObject buyUpgrade;
+    public TextMeshProUGUI buyUpgradeText;
 
     float startHp, timeToHealStart = 0;
 

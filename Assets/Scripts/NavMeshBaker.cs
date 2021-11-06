@@ -15,7 +15,6 @@ public class NavMeshBaker : MonoBehaviour {
             return;
         }
         Instance = this;
-        BuildMesh();
     }
     #endregion
 

@@ -82,12 +82,28 @@ public class PlayerShoot : MonoBehaviour {
     RaycastHit[] hits;
     void Fire() {
         AudioManager.instance.Play(currentGun.soundName);
+        if(currentGun.upgraded) {
+            AudioManager.instance.Play("Upgraded Shot"); 
+        }
 
         CameraShaker.Instance.ShakeOnce(currentGun.recoil.recoilPower * 10, 8f, .1f, currentGun.recoil.recoilPower);
 
         currentGun.Fire();
 
-        currentGun.muzzleFlash.Play();
+        if(currentGun.primaryShot) {
+            currentGun.muzzleFlash.Play();
+            if(currentGun.secondaryMuzzleFlash != null) {
+                currentGun.primaryShot = !currentGun.primaryShot;
+                currentGun.animator.SetBool("PrimFire", currentGun.primaryShot);
+            }
+        }
+        else {
+            currentGun.secondaryMuzzleFlash.Play();
+            if(currentGun.secondaryMuzzleFlash != null) {
+                currentGun.primaryShot = !currentGun.primaryShot;
+                currentGun.animator.SetBool("PrimFire", currentGun.primaryShot);
+            }
+        }
 
         for(int i = 0; i < currentGun.shots; i++) {
             Ray ray = new Ray(shootPos.position, GetRandomForward());
@@ -163,7 +179,7 @@ public class PlayerShoot : MonoBehaviour {
             zoom.ResetZoom();
             if(guns.Count > 1) {
                 StopAllCoroutines();
-                StartCoroutine(SwitchWeaponDelay()); 
+                StartCoroutine(SwitchWeaponDelay());
             }
         }
         if(Input.GetAxis("Mouse ScrollWheel") < 0) {
@@ -250,7 +266,7 @@ public class PlayerShoot : MonoBehaviour {
         isSwitching = true;
 
         currentGun.animator.SetTrigger("Switch");
-        yield return new WaitForSeconds(currentGun.switchOutSpeed);
+        yield return new WaitForSeconds(0.5f);
         EquipWeapon();
         yield return new WaitForSeconds(currentGun.switchInSpeed);
 

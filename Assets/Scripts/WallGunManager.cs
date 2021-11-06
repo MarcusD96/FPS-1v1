@@ -8,10 +8,12 @@ public class WallGunManager : MonoBehaviour {
     WallGun[] wallGuns;
     WallGun activeWallGun;
     Player player;
+    PlayerShoot ps;
 
     private void Start() {
         wallGuns = new WallGun[transform.childCount];
         player = PlayerManager.Instance.player;
+        ps = player.GetComponent<PlayerShoot>();
         for(int i = 0; i < wallGuns.Length; i++) {
             wallGuns[i] = transform.GetChild(i).GetComponent<WallGun>();
         }
@@ -42,10 +44,13 @@ public class WallGunManager : MonoBehaviour {
             activeWallGun = wg;
             player.buyWeapon.SetActive(true);
             if(!wg.purchased)
-                player.buyWeaponText.text = wg.gunName + " - " + wg.gunPrice + " (F)"; 
-            else
-
-                player.buyWeaponText.text = wg.gunName + " - " + wg.ammoPrice + " (F)";
+                player.buyWeaponText.text = wg.gunName + " - " + wg.gunPrice + " (F)";
+            else {
+                if(!activeWallGun.purchasedGun.upgraded)
+                    player.buyWeaponText.text = wg.gunName + " - " + wg.ammoPrice + " (F)";
+                else
+                    player.buyWeaponText.text = wg.gunName + " - " + wg.ammoPrice * 3 + " (F)";
+            }
         }
     }
 
@@ -55,8 +60,12 @@ public class WallGunManager : MonoBehaviour {
 
         if(!activeWallGun.purchased)
             BuyGun();
-        else
-            BuyAmmo();
+        else {
+            if(activeWallGun.purchasedGun.upgraded)
+                BuyAmmo(true);
+            else
+                BuyAmmo(false);
+        }
     }
 
     void BuyGun() {
@@ -66,33 +75,48 @@ public class WallGunManager : MonoBehaviour {
             activeWallGun.gunName += " ammo";
             var g = Instantiate(activeWallGun.gunModel, player.handPos);
             activeWallGun.purchasedGun = g.GetComponent<Gun>();
-            PlayerShoot shootComp = player.GetComponent<PlayerShoot>();
 
-            if(shootComp.guns.Count > 1) {
+            if(ps.guns.Count > 1) {
                 //replace gun
-                Destroy(shootComp.currentGun.gameObject);
-                shootComp.guns[shootComp.gunIndex] = g.GetComponent<Gun>();
-                shootComp.EquipWeapon();
+                Destroy(ps.currentGun.gameObject);
+                ps.guns[ps.gunIndex] = g.GetComponent<Gun>();
+                ps.EquipWeapon();
             }
             else {
                 //add gun
-                shootComp.guns.Add(g.GetComponent<Gun>());
-                shootComp.gunIndex = shootComp.guns.Count - 1;
-                shootComp.EquipWeapon();
+                ps.guns.Add(g.GetComponent<Gun>());
+                ps.gunIndex = ps.guns.Count - 1;
+                ps.EquipWeapon();
             }
         }
     }
 
-    void BuyAmmo() {
-        if(Input.GetKeyDown(KeyCode.F) && player.points >= activeWallGun.ammoPrice) {
-            PlayerShoot shootComp = player.GetComponent<PlayerShoot>();
-            if(shootComp.currentGun.remainingAmmo >= shootComp.currentGun.magazineSize * 10) {
-                return;
+    void BuyAmmo(bool upgraded) {
+        if(!upgraded) {
+            if(Input.GetKeyDown(KeyCode.F) && player.points >= activeWallGun.ammoPrice && activeWallGun.purchasedGun == ps.currentGun) {
+                if(ps.currentGun.remainingAmmo >= ps.currentGun.magazineSize * 10) {
+                    return;
+                }
+                player.points -= activeWallGun.ammoPrice;
+                var pShoot = player.GetComponent<PlayerShoot>();
+                var gun = pShoot.guns[pShoot.guns.IndexOf(activeWallGun.purchasedGun)];
+                gun.remainingAmmo = gun.magazineSize * 10;
             }
-            player.points -= activeWallGun.ammoPrice;
-            var pShoot = player.GetComponent<PlayerShoot>();
-            var gun = pShoot.guns[pShoot.guns.IndexOf(activeWallGun.purchasedGun)];
-            gun.remainingAmmo = gun.magazineSize * 10;
         }
+        else {
+            if(Input.GetKeyDown(KeyCode.F) && player.points >= activeWallGun.ammoPrice * 3 && activeWallGun.purchasedGun == ps.currentGun) {
+                if(ps.currentGun.remainingAmmo >= ps.currentGun.magazineSize * 10) {
+                    return;
+                }
+                player.points -= activeWallGun.ammoPrice * 3;
+                var pShoot = player.GetComponent<PlayerShoot>();
+                var gun = pShoot.guns[pShoot.guns.IndexOf(activeWallGun.purchasedGun)];
+                gun.remainingAmmo = gun.magazineSize * 10;
+            }
+        }
+    }
+
+    public WallGun[] GetWallGuns() {
+        return wallGuns;
     }
 }

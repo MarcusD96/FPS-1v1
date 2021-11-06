@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour {
 
-    public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed, switchOutSpeed;
-    public int magazineSize, penetration, remainingAmmo;
-    public bool isAuto, canReload, maxSpread, isShotgun;
+    public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed;
+    public int magazineSize, penetration, remainingAmmo, numReloadShells;
+    public bool isAuto, canReload, maxSpread, isShotgun, upgraded, primaryShot = true;
     public string soundName;
     public int shots;
 
     public float headShotMult, torsoShotMult;
 
     public GameObject model;
-    public ParticleSystem muzzleFlash;
+    public ParticleSystem muzzleFlash, secondaryMuzzleFlash;
     public BulletCasing bulletCasingPrefab;
-    public Transform ejectPort;
+    public Transform[] ejectPorts;
     public Animator animator;
+    public Gun upgradedGun;
 
     [HideInInspector]
     public int currentAmmo;
@@ -58,12 +59,19 @@ public class Gun : MonoBehaviour {
             Reload();
             return;
         }
+        animator.SetTrigger("Fire");
         recoil.StartRecoil();
         currentAmmo--;
-        var c = Instantiate(bulletCasingPrefab, ejectPort.position, bulletCasingPrefab.transform.rotation);
+        EjectShell();
+    }
+
+    int ejectIndex = 0;
+    void EjectShell() {
+        var c = Instantiate(bulletCasingPrefab, ejectPorts[ejectIndex].position, bulletCasingPrefab.transform.rotation);
         c.Initialize(transform.right.normalized + transform.up.normalized * 3);
-        if(animator)
-            animator.SetTrigger("Fire");
+        ejectIndex++;
+        if(ejectIndex >= ejectPorts.Length)
+            ejectIndex = 0;
     }
 
     public void Reload() {
@@ -123,28 +131,21 @@ public class Gun : MonoBehaviour {
         //yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
         yield return new WaitForSeconds(1f / 3f);
 
-        if(currentAmmo < 1) {
-            while(currentAmmo < magazineSize) {
-                yield return new WaitForSeconds(reloadTime);
-                if(remainingAmmo > 0) {
-                    currentAmmo += 1;
-                    remainingAmmo -= 1;
-                }
-                else
-                    break;
+        #region old reload
+        while(currentAmmo < magazineSize) { //under mag size
+            yield return new WaitForSeconds(reloadTime);
+            if(remainingAmmo > 0) { //has ammo still
+                currentAmmo += numReloadShells;
+                if(currentAmmo > magazineSize)
+                    currentAmmo = magazineSize;
+                remainingAmmo -= numReloadShells;
+                if(remainingAmmo < 0)
+                    remainingAmmo = 0;
             }
+            else
+                break;
         }
-        else {
-            while(currentAmmo < magazineSize + 1) {
-                yield return new WaitForSeconds(reloadTime);
-                if(remainingAmmo > 0) {
-                    currentAmmo += 1;
-                    remainingAmmo -= 1;
-                }
-                else
-                    break;
-            }
-        }
+        #endregion
 
         isReloading = false;
         animator.SetBool("Reloading", isReloading);

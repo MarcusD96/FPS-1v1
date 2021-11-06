@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour {
             Settings.FOV_Current = Settings.FOV_Base;
         }
 
-        playerShootComp.currentGun.animator.SetBool("IsRunning", isRunning);
+       playerShootComp.currentGun.animator.SetBool("IsRunning", isRunning);
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
