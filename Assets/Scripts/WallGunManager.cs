@@ -13,7 +13,9 @@ public class WallGunManager : MonoBehaviour {
     private void Start() {
         wallGuns = new WallGun[transform.childCount];
         player = PlayerManager.Instance.player;
-        ps = player.GetComponent<PlayerShoot>();
+        if(player) {
+            ps = player.GetComponent<PlayerShoot>(); 
+        }
         for(int i = 0; i < wallGuns.Length; i++) {
             wallGuns[i] = transform.GetChild(i).GetComponent<WallGun>();
         }
@@ -23,6 +25,9 @@ public class WallGunManager : MonoBehaviour {
     void FindClosestInteractable() {
         if(player == null) {
             player = PlayerManager.Instance.player;
+            if(player) {
+                ps = player.GetComponent<PlayerShoot>();
+            }
             return;
         }
 

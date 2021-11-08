@@ -110,16 +110,16 @@ public class PlayerShoot : MonoBehaviour {
             hits = Physics.RaycastAll(ray, 100, shootableLayerMask);
             System.Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
 
-            int p;
-            if(hits.Length <= 0)
-                return;
-            if(hits.Length <= currentGun.penetration)
-                p = hits.Length;
-            else
-                p = currentGun.penetration;
+            //int p;
+            //if(hits.Length <= 0)
+            //    return;
+            //if(hits.Length <= currentGun.penetration)
+            //    p = hits.Length;
+            //else
+            //    p = currentGun.penetration;
 
             List<Enemy> hitList = new List<Enemy>();
-            for(int h = 0; h < p; h++) {
+            for(int h = 0; h < currentGun.penetration && h < hits.Length; h++) {
                 if(hits[h].collider.gameObject.layer == LayerMask.NameToLayer("Ground")) {
                     var hitEffect = Instantiate(objectImpactEffect, hits[h].point, Quaternion.LookRotation(hits[h].normal));
                     Destroy(hitEffect, 1f);
@@ -129,7 +129,7 @@ public class PlayerShoot : MonoBehaviour {
                     break;
                 }
                 if(hitList.Contains(hits[h].collider.transform.root.GetComponent<Enemy>())) {
-                    p++;
+                    h--;
                     continue;
                 }
 

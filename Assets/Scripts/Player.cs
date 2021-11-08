@@ -25,13 +25,19 @@ public class Player : MonoBehaviour {
     public GameObject buyUpgrade;
     public TextMeshProUGUI buyUpgradeText;
 
-    float startHp, timeToHealStart = 0;
+    float startHp, timeToHealStart = 0f;
+    float damageCooldown = 0.5f, nextDamage = 0f;
 
     private void Start() {
         startHp = hp;
     }
 
     public void Damage(float damage_) {
+        if(nextDamage > 0f)
+            return;
+
+        nextDamage = damageCooldown;
+
         timeToHealStart = healDelayTime;
         EZCameraShake.CameraShaker.Instance.ShakeOnce(30f, 10f, .1f, .2f);
         hp -= damage_;
@@ -55,6 +61,7 @@ public class Player : MonoBehaviour {
 
     private void Update() {
         timeToHealStart -= Time.deltaTime;
+        nextDamage -= Time.deltaTime;
 
         Color dmgColor = damageVignette.color;
         var hpPercent = hp / startHp;

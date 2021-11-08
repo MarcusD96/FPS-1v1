@@ -10,12 +10,20 @@ public class WaveSpawner : MonoBehaviour {
     public int maxEnemies;
 
     public GameObject enemyPrefab;
-    public Spawn[] spawns;
+    Spawn[] spawns;
 
     bool waveStarted = false;
+    [SerializeField]
     int waveNum = 29;
 
     List<GameObject> spawnedEnemies = new List<GameObject>();
+
+    private void Start() {
+        spawns = new Spawn[transform.childCount];
+        for(int i = 0; i < spawns.Length; i++) {
+            spawns[i] = transform.GetChild(i).GetComponent<Spawn>();
+        }
+    }
 
     private void LateUpdate() {
         if(waveStarted == false)
