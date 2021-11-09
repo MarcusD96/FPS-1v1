@@ -47,6 +47,14 @@ public class WaveSpawner : MonoBehaviour {
             while(spawnedEnemies.Count >= maxEnemies)
                 yield return null;
             int r = Random.Range(0, spawns.Length);
+            //only spawn in rooms that are unlocked
+            while(!spawns[r].roomAccess.unlocked) {
+                r++;
+                if(r >= spawns.Length)
+                    r = 0;
+            }
+            print(r);
+            
             GameObject g = Instantiate(enemyPrefab, spawns[r].GetPos(), spawns[r].transform.rotation);
             spawnedEnemies.Add(g);
 

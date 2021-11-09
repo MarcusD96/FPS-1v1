@@ -6,7 +6,7 @@ public class UpgradeWeapon : MonoBehaviour {
     public float interactDistance, upgradeTime;
     public int upgradeCost;
 
-    bool isUpgrading = false, finishedUpgrading = false;
+    bool isUpgrading = false;
     Player player;
     Gun upgradedGun;
 

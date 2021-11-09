@@ -5,6 +5,7 @@ using UnityEngine;
 public class DoorManager : MonoBehaviour {
 
     public float interactDistance;
+    public Room[] rooms;
 
     List<BuyableDoor> doors = new List<BuyableDoor>();
     BuyableDoor activeDoor;
@@ -58,7 +59,12 @@ public class DoorManager : MonoBehaviour {
 
         player.points -= activeDoor.cost;
         doors.Remove(activeDoor);
-        Destroy(activeDoor.gameObject);
+        activeDoor.BuyDoor();
+        foreach(var r in rooms) {
+            if(!r.unlocked) {
+                r.CheckAccess();
+            }
+        }
         NavMeshBaker.Instance.TriggerBuildMesh();
     }
 }
