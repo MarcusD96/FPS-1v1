@@ -53,7 +53,6 @@ public class WaveSpawner : MonoBehaviour {
                 if(r >= spawns.Length)
                     r = 0;
             }
-            print(r);
             
             GameObject g = Instantiate(enemyPrefab, spawns[r].GetPos(), spawns[r].transform.rotation);
             spawnedEnemies.Add(g);

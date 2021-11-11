@@ -42,7 +42,7 @@ public class Player : MonoBehaviour {
         EZCameraShake.CameraShaker.Instance.ShakeOnce(30f, 10f, .1f, .2f);
         hp -= damage_;
         if(hp <= 0)
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
     void Heal() {
