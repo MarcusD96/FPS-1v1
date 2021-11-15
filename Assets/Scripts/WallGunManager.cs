@@ -81,21 +81,7 @@ public class WallGunManager : MonoBehaviour {
             var g = Instantiate(activeWallGun.gunModel, player.handPos);
             activeWallGun.purchasedGun = g.GetComponent<Gun>();
 
-            if(ps.guns.Count > 1) {
-                //replace gun
-                FindObjectOfType<RandomGunBox>().RestoreToBox(ps.currentGun);
-                Destroy(ps.currentGun.gameObject);
-                ps.guns[ps.gunIndex] = g.GetComponent<Gun>();
-                ps.EquipWeapon();
-                FindObjectOfType<RandomGunBox>().RemoveFromBox(ps.currentGun);
-            }
-            else {
-                //add gun
-                ps.guns.Add(g.GetComponent<Gun>());
-                ps.gunIndex = ps.guns.Count - 1;
-                ps.EquipWeapon();
-                FindObjectOfType<RandomGunBox>().RemoveFromBox(ps.currentGun);
-            }
+            ps.GiveWeapon(g);
         }
     }
 

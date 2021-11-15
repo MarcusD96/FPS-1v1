@@ -14,7 +14,7 @@ public class RandomGunBox : MonoBehaviour {
         availableGuns = new List<GameObject>(levelGuns);
     }
 
-    void FixedUpdate() {
+    void LateUpdate() {
         Player p = PlayerManager.Instance.player;
 
         if(!p)
@@ -26,21 +26,7 @@ public class RandomGunBox : MonoBehaviour {
                 int r = Random.Range(0, availableGuns.Count);
                 PlayerShoot ps = p.GetComponent<PlayerShoot>();
                 var g = Instantiate(availableGuns[r], p.handPos);
-                if(ps.guns.Count > 1) {
-                    //replace gun
-                    RestoreToBox(ps.currentGun);
-                    Destroy(ps.currentGun.gameObject);
-                    ps.guns[ps.gunIndex] = g.GetComponent<Gun>();
-                    ps.EquipWeapon();
-                    RemoveFromBox(ps.currentGun);
-                }
-                else {
-                    //add gun
-                    ps.guns.Add(g.GetComponent<Gun>());
-                    ps.gunIndex = ps.guns.Count - 1;
-                    ps.EquipWeapon();
-                    RemoveFromBox(ps.currentGun);
-                }
+                ps.GiveWeapon(g);
             }
         }
     }
@@ -53,4 +39,13 @@ public class RandomGunBox : MonoBehaviour {
         if(levelGuns.Contains(gun.gameObject))
             availableGuns.Add(gun.gameObject);
     }
+}
+
+public enum GunNameID {
+    M9,
+    GLOCK,
+    M4,
+    R870,
+    AK47,
+    KSR
 }

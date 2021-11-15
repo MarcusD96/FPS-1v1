@@ -13,6 +13,7 @@ public class Gun : MonoBehaviour {
     public float headShotMult, torsoShotMult;
 
     public GameObject model;
+    public GunNameID gunID;
     public ParticleSystem muzzleFlash, secondaryMuzzleFlash;
     public BulletCasing bulletCasingPrefab;
     public Transform[] ejectPorts;

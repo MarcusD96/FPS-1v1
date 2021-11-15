@@ -104,6 +104,7 @@ MonoBehaviour:
   headShotMult: 0
   torsoShotMult: 0
   model: {fileID: 0}
+  gunID: 1
   muzzleFlash: {fileID: 0}
   secondaryMuzzleFlash: {fileID: 0}
   bulletCasingPrefab: {fileID: 0}

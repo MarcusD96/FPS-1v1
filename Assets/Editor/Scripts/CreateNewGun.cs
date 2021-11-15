@@ -14,6 +14,7 @@ public class CreateNewGun : EditorWindow {
 
     string gunName;
     GameObject model;
+    GunNameID gunID;
 
     bool noName = false, noModel = false;
 
@@ -21,6 +22,7 @@ public class CreateNewGun : EditorWindow {
         GUILayout.Label("Create New Gun", EditorStyles.boldLabel);
         gunName = EditorGUILayout.TextField("Gun Name", gunName);
         model = EditorGUILayout.ObjectField("Gun Model", model, typeof(GameObject), false) as GameObject;
+        gunID = (GunNameID) EditorGUILayout.EnumPopup("Gun ID", gunID);
 
         if(noName) {
             GUI.color = Color.red;
@@ -74,7 +76,8 @@ public class CreateNewGun : EditorWindow {
 
         //Create Base Object with Gun Component
         var g = new GameObject(gName);
-        g.AddComponent<Gun>();
+        var gun = g.AddComponent<Gun>();
+        gun.gunID = gunID;
         g.AddComponent<Recoil>();
 
         //Create Holder Transform and link with base object

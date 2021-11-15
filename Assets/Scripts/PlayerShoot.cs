@@ -83,7 +83,7 @@ public class PlayerShoot : MonoBehaviour {
     void Fire() {
         AudioManager.instance.Play(currentGun.soundName);
         if(currentGun.upgraded) {
-            AudioManager.instance.Play("Upgraded Shot"); 
+            AudioManager.instance.Play("Upgraded Shot");
         }
 
         CameraShaker.Instance.ShakeOnce(currentGun.recoil.recoilPower * 10, 8f, .1f, currentGun.recoil.recoilPower);
@@ -210,6 +210,20 @@ public class PlayerShoot : MonoBehaviour {
         }
     }
 
+    public void GiveWeapon(GameObject g) {
+        Gun gun = g.GetComponent<Gun>();
+        if(guns.Count > 1) {
+            Destroy(currentGun.gameObject);
+            guns[gunIndex] = gun;
+            EquipWeapon();
+        }
+        else {
+            guns.Add(gun);
+            gunIndex = 1;
+            EquipWeapon();
+        }
+    }
+
     float CalculateDamage(float distToTarget_) {
         //within min range
         if(distToTarget_ <= currentGun.minRange)
@@ -272,4 +286,6 @@ public class PlayerShoot : MonoBehaviour {
 
         isSwitching = false;
     }
+
+
 }
