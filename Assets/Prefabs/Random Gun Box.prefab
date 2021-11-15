@@ -360,6 +360,7 @@ MonoBehaviour:
   cost: 950
   interactDistance: 2
   levelGuns:
-  - {fileID: 2336173444181203808, guid: 473f56a8a802dc743b76e5d20c964997, type: 3}
-  - {fileID: 4188182102378362150, guid: 39606380d652ce042bc7c61a3f09769d, type: 3}
-  - {fileID: 2203930807040660924, guid: 1eceb5b71de12eb47b6332d6206cdf99, type: 3}
+  - {fileID: 8181241431691469833, guid: 6f942cc94e87aa24c984adfb49c4be9b, type: 3}
+  - {fileID: 1780608734277330074, guid: 473f56a8a802dc743b76e5d20c964997, type: 3}
+  - {fileID: 2203930807040660927, guid: 1eceb5b71de12eb47b6332d6206cdf99, type: 3}
+  - {fileID: 4821799738722205373, guid: 39606380d652ce042bc7c61a3f09769d, type: 3}

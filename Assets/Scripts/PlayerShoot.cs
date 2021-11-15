@@ -43,9 +43,13 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     void Shoot() {
+
         nextFire -= Time.deltaTime;
 
         ammoText.text = currentGun.currentAmmo.ToString() + "/" + currentGun.remainingAmmo;
+
+        if(currentGun.currentAmmo <= 0 && currentGun.remainingAmmo <= 0)
+            return;
 
         if(nextFire <= -0.1f && !currentGun.maxSpread)
             firingSpreadRadius = Mathf.Lerp(firingSpreadRadius, 0, currentGun.recoveryTime * Time.deltaTime);

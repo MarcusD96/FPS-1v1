@@ -6,38 +6,54 @@ public class RandomGunBox : MonoBehaviour {
 
     public int cost;
     public float interactDistance;
-    public List<GameObject> levelGuns;
+    public List<Gun> levelGuns;
 
-    List<GameObject> availableGuns;
+    Player p;
+    PlayerShoot ps;
 
-    void Start() {
-        availableGuns = new List<GameObject>(levelGuns);
-    }
-
-    void LateUpdate() {
-        Player p = PlayerManager.Instance.player;
-
-        if(!p)
+    void Update() {
+        if(!p || !ps) {
+            p = PlayerManager.Instance.player;
+            ps = p.GetComponent<PlayerShoot>();
             return;
+        }
 
-        if(Vector3.Distance(p.transform.position, transform.position) <= interactDistance && p.points >= cost) {
+        if(Vector3.Distance(transform.position, p.transform.position) <= interactDistance && p.points >= cost) {
             if(Input.GetKeyDown(KeyCode.F)) {
                 p.points -= cost;
-                int r = Random.Range(0, availableGuns.Count);
-                PlayerShoot ps = p.GetComponent<PlayerShoot>();
-                var g = Instantiate(availableGuns[r], p.handPos);
-                ps.GiveWeapon(g);
+                GetRandomGunFromList();
             }
         }
     }
 
-    public void RemoveFromBox(Gun gun) {
-        availableGuns.Remove(gun.gameObject);
-    }
+    void GetRandomGunFromList() {
+        int r = Random.Range(0, levelGuns.Count);
 
-    public void RestoreToBox(Gun gun) {
-        if(levelGuns.Contains(gun.gameObject))
-            availableGuns.Add(gun.gameObject);
+        //player has weapon, reroll
+        bool hasWeapon = false;
+        foreach(var g in ps.guns) {
+            if(g.gunID == levelGuns[r].gunID) {
+                GetRandomGunFromList();
+                hasWeapon = true;
+                break;
+            }
+        }
+
+        //player doesnt have weapon, give weapon
+        if(!hasWeapon) {
+            var g = Instantiate(levelGuns[r], p.handPos);
+            ps.GiveWeapon(g.gameObject);
+
+            //check for level wall gun
+            foreach(var wg in FindObjectOfType<WallGunManager>().GetWallGuns()) {
+                //if the random gun id == the wallgun gun id, mark wallgun as purchased
+                var gun = wg.gunModel.GetComponent<Gun>();
+                if(gun.gunID == levelGuns[r].gunID) {
+                    wg.purchased = true;
+                    wg.purchasedGun = g;
+                }
+            }
+        }
     }
 }
 

@@ -52,9 +52,9 @@ public class WallGunManager : MonoBehaviour {
                 player.buyWeaponText.text = wg.gunName + " - " + wg.gunPrice + " (F)";
             else {
                 if(!activeWallGun.purchasedGun.upgraded)
-                    player.buyWeaponText.text = wg.gunName + " - " + wg.ammoPrice + " (F)";
+                    player.buyWeaponText.text = wg.purchasedGunName + " - " + wg.ammoPrice + " (F)";
                 else
-                    player.buyWeaponText.text = wg.gunName + " - " + wg.ammoPrice * 3 + " (F)";
+                    player.buyWeaponText.text = "UPGRADED" + wg.purchasedGunName + " - " + wg.ammoPrice * 3 + " (F)";
             }
         }
     }
@@ -77,7 +77,6 @@ public class WallGunManager : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.F) && player.points >= activeWallGun.gunPrice) {
             player.points -= activeWallGun.gunPrice;
             activeWallGun.purchased = true;
-            activeWallGun.gunName += " ammo";
             var g = Instantiate(activeWallGun.gunModel, player.handPos);
             activeWallGun.purchasedGun = g.GetComponent<Gun>();
 

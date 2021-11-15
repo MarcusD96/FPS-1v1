@@ -8,12 +8,15 @@ public class WallGun : MonoBehaviour {
     public int ammoPrice;
     public bool purchased;
 
+    [HideInInspector]
+    public string purchasedGunName;
     public GameObject gunModel;
     [HideInInspector]
     public Gun purchasedGun;
 
     private void Awake() {
         purchased = false;
+        purchasedGunName = gunName + " ammo";
     }
 
     private void LateUpdate() {
@@ -21,4 +24,5 @@ public class WallGun : MonoBehaviour {
             if(purchasedGun == null)
                 purchased = false;
     }
+
 }
