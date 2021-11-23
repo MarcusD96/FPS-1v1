@@ -22,6 +22,15 @@ public class PlayerManager : MonoBehaviour {
     #endregion
 
     public Player player;
+    [Header("Movement Controls")]
+    public KeyCode forward;
+    public KeyCode back, left, right, sprint, crouch;
+    [Header("Gun Controls")]
+    public KeyCode fire;
+    public KeyCode ADS, melee;
+    [Header("Other Controls")]
+    public KeyCode useEqipment;
+    public KeyCode interact, pause;
 
     private void Start() {
         Application.targetFrameRate = 150;

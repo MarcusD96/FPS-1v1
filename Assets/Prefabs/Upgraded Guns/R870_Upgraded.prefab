@@ -347,6 +347,7 @@ MonoBehaviour:
   headShotMult: 2
   torsoShotMult: 1
   model: {fileID: 2221681337189605125}
+  gunID: 3
   muzzleFlash: {fileID: 619994539128162194}
   secondaryMuzzleFlash: {fileID: 0}
   bulletCasingPrefab: {fileID: -2324815831994801041, guid: 22ae0f90e1231c447975d24472fea68d, type: 3}

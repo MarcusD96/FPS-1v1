@@ -12,45 +12,104 @@ public class CreateNewGun : EditorWindow {
         window = GetWindow(typeof(CreateNewGun));
     }
 
+    //object
     string gunName;
     GameObject model;
-    GunNameID gunID;
+    BulletCasing casing;
+    AudioClip shootClip;
 
-    bool noName = false, noModel = false;
+    //gun stats
+    GunNameID gunID;
+    float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed;
+    int magazineSize, penetration, numReloadShells;
+    bool isAuto, isShotgun;
+    int shots;
+    float headShotMult, torsoShotMult;
+
+    //missing required flags
+    bool noName = false, noModel = false, noCasing = false, noSound = false;
 
     private void OnGUI() {
-        GUILayout.Label("Create New Gun", EditorStyles.boldLabel);
+        GUILayout.Label("\nCreate New Gun", EditorStyles.boldLabel);
         gunName = EditorGUILayout.TextField("Gun Name", gunName);
         model = EditorGUILayout.ObjectField("Gun Model", model, typeof(GameObject), false) as GameObject;
-        gunID = (GunNameID) EditorGUILayout.EnumPopup("Gun ID", gunID);
+        casing = EditorGUILayout.ObjectField("Casing Model", casing, typeof(BulletCasing), false) as BulletCasing;
+        shootClip = EditorGUILayout.ObjectField("Casing Model", casing, typeof(AudioClip), false) as AudioClip;
 
+        GUILayout.Label("\nGun Stats", EditorStyles.boldLabel);
+        gunID = (GunNameID) EditorGUILayout.EnumPopup("Gun ID", gunID);
+        fireRate = EditorGUILayout.FloatField("Firerate", fireRate);
+        damage = EditorGUILayout.FloatField("Damage", damage);
+        minDamage = EditorGUILayout.FloatField("Min Damage", minDamage);
+        reloadTime = EditorGUILayout.FloatField("Reload", reloadTime);
+        minRange = EditorGUILayout.FloatField("Min Range", minRange);
+        maxRange = EditorGUILayout.FloatField("Max Range", maxRange);
+        adsZoom = EditorGUILayout.FloatField("ADS Zoom", adsZoom);
+        adsSpeed = EditorGUILayout.FloatField("ADS Speed", adsSpeed);
+        hipFireBaseSpread = EditorGUILayout.FloatField("Hip Fire Base Spread", hipFireBaseSpread);
+        hipFireMaxSpread = EditorGUILayout.FloatField("Hip Fire Max Spread", hipFireMaxSpread);
+        recoveryTime = EditorGUILayout.FloatField("Recovery Time", recoveryTime);
+        switchInSpeed = EditorGUILayout.FloatField("Switch In Speed", switchInSpeed);
+        headShotMult = EditorGUILayout.FloatField("Headshot Multiplier", headShotMult);
+        torsoShotMult = EditorGUILayout.FloatField("Torso Multiplier", torsoShotMult);
+
+        magazineSize = EditorGUILayout.IntField("Magazine Size", magazineSize);
+        penetration = EditorGUILayout.IntField("Penetration", penetration);
+        numReloadShells = EditorGUILayout.IntField("Num Shells To Reload", numReloadShells);
+        shots = EditorGUILayout.IntField("Pellets Per Shot", shots);
+
+        isAuto = EditorGUILayout.Toggle("Is Auto", isAuto);
+        isShotgun = EditorGUILayout.Toggle("Is Shotgun", isShotgun);
+
+        if(noName || noModel || noCasing || noSound) {
+            GUI.color = Color.red;
+            GUILayout.Label("***************************************************************************************************************", EditorStyles.popup);
+            GUI.color = Color.white; 
+        }
         if(noName) {
             GUI.color = Color.red;
-            GUILayout.Label("**gun name required**\n");
+            GUILayout.Label("**gun name required**");
             GUI.color = Color.white;
         }
         if(noModel) {
             GUI.color = Color.red;
-            GUILayout.Label("**gun model required**\n");
+            GUILayout.Label("**gun model required**");
+            GUI.color = Color.white;
+        }
+        if(noCasing) {
+            GUI.color = Color.red;
+            GUILayout.Label("**casing model required**");
+            GUI.color = Color.white;
+        }
+        if(noSound) {
+            GUI.color = Color.red;
+            GUILayout.Label("**audio clip required**");
             GUI.color = Color.white;
         }
 
         if(GUILayout.Button("Create Gun!")) {
-            if(string.IsNullOrEmpty(gunName)) {
+            if(string.IsNullOrEmpty(gunName))
                 noName = true;
-                if(model != null) {
-                    return;
-                }
-            }
             else
                 noName = false;
 
-            if(model == null) {
+            if(model == null)
                 noModel = true;
-                return;
-            }
             else
                 noModel = false;
+
+            if(casing == null)
+                noCasing = true;
+            else
+                noCasing = false;
+
+            if(shootClip == null)
+                noSound = true;
+            else
+                noSound = false;
+
+            if(noName || noModel || noCasing || noSound)
+                return;
 
             Debug.LogWarning("TODO:\n" +
                 "Add firing position with muzzle flash and link\n" +
@@ -67,7 +126,6 @@ public class CreateNewGun : EditorWindow {
         CreateWallGun(g);
     }
 
-
     AnimatorController controller;
     GameObject CreateGun(bool upgraded) {
         string gName = gunName;
@@ -76,9 +134,22 @@ public class CreateNewGun : EditorWindow {
 
         //Create Base Object with Gun Component
         var g = new GameObject(gName);
-        var gun = g.AddComponent<Gun>();
-        gun.gunID = gunID;
         g.AddComponent<Recoil>();
+        Gun gun = g.AddComponent<Gun>();
+
+        //set gun stats
+        gun.gunID = gunID;
+        gun.SetStats(fireRate, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime,
+            switchInSpeed, magazineSize, penetration, numReloadShells, isAuto, isShotgun, upgraded, shootClip.name, shots, headShotMult, torsoShotMult, gunID, casing);
+
+        //Create sound in AudioManager
+        var am = FindObjectOfType<AudioManager>();
+        Sound[] sounds = new Sound[am.sounds.Length + 1];
+        for(int i = 0; i < sounds.Length - 1; i++) {
+            sounds[i] = am.sounds[i];
+        }
+        sounds[sounds.Length] = new Sound();
+        am.sounds = sounds;
 
         //Create Holder Transform and link with base object
         var g_holder = new GameObject(gName);

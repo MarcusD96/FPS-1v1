@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2121143778561640659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2194661010808680699}
+  m_Layer: 0
+  m_Name: GunSpawnPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2194661010808680699
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121143778561640659}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0.35, y: 1.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7402680108806233320}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7402680107014069003
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,6 +353,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7402680108806233320}
   - component: {fileID: 7402680108806233319}
+  - component: {fileID: 8486605289315232571}
   m_Layer: 0
   m_Name: Random Gun Box
   m_TagString: Untagged
@@ -337,14 +368,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7402680108806233318}
-  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: -2, y: 0, z: 2.25}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7402680107014069233}
+  - {fileID: 2194661010808680699}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7402680108806233319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,8 +391,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 950
   interactDistance: 2
+  switchTime: 0.25
+  gunRewardTime: 3
+  rewardExpiryTime: 10
+  animator: {fileID: 8486605289315232571}
+  gunModelPos: {fileID: 2194661010808680699}
   levelGuns:
   - {fileID: 8181241431691469833, guid: 6f942cc94e87aa24c984adfb49c4be9b, type: 3}
   - {fileID: 1780608734277330074, guid: 473f56a8a802dc743b76e5d20c964997, type: 3}
   - {fileID: 2203930807040660927, guid: 1eceb5b71de12eb47b6332d6206cdf99, type: 3}
   - {fileID: 4821799738722205373, guid: 39606380d652ce042bc7c61a3f09769d, type: 3}
+--- !u!95 &8486605289315232571
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7402680108806233318}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a677a4360ab5ec247b35ed3237850fd7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

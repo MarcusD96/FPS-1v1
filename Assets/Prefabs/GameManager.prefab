@@ -45,6 +45,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  forward: 119
+  back: 115
+  left: 97
+  right: 100
+  sprint: 304
+  crouch: 306
+  fire: 323
+  ADS: 324
+  melee: 327
+  useEqipment: 103
+  interact: 102
+  pause: 27
 --- !u!114 &3054562513102995012
 MonoBehaviour:
   m_ObjectHideFlags: 0

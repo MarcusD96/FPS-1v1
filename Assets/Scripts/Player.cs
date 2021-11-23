@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     public bool isCrouching;
     public float healSpeed, healDelayTime;
 
-    public Transform handPos;
+    public Transform hand;
     public Animator animator;
     public Image damageVignette;
 

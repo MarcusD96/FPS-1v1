@@ -70,7 +70,7 @@ public class WaveSpawner : MonoBehaviour {
         //wait for enemies to be killed
         bool lastRunning = false;
         while(spawnedEnemies.Count > 0) {
-            if(spawnedEnemies.Count == 1 && !lastRunning) {
+            if(waveNum >= 5 && spawnedEnemies.Count == 1 && !lastRunning) {
                 lastRunning = true;
                 spawnedEnemies[0].GetComponent<EnemyAI>().ChangeToRunner();
             }
@@ -90,12 +90,12 @@ public class WaveSpawner : MonoBehaviour {
         }
         else if(waveNum < 25) {
             numSpawn = 22 + ((waveNum - 1) * 3);
-            spawnTime = 1.5f;
+            spawnTime = 1f;
         }
 
         else if(waveNum >= 25) {
             numSpawn = 137 + ((waveNum - 1) * 5);
-            spawnTime = 0.75f;
+            spawnTime = 0.25f;
         }
     }
 

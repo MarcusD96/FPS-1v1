@@ -77,7 +77,7 @@ public class WallGunManager : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.F) && player.points >= activeWallGun.gunPrice) {
             player.points -= activeWallGun.gunPrice;
             activeWallGun.purchased = true;
-            var g = Instantiate(activeWallGun.gunModel, player.handPos);
+            var g = Instantiate(activeWallGun.gunModel);
             activeWallGun.purchasedGun = g.GetComponent<Gun>();
 
             ps.GiveWeapon(g);

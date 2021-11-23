@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 2203930807040660925}
   - component: {fileID: 2203930807040660927}
   - component: {fileID: 2203930807040660926}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: R870
   m_TagString: Untagged
   m_Icon: {fileID: 0}

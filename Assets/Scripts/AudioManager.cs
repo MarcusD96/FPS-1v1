@@ -1,6 +1,7 @@
 using UnityEngine.Audio;
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour {
 
@@ -43,7 +44,7 @@ public class AudioManager : MonoBehaviour {
 
 }
 
-[System.Serializable]
+[Serializable]
 public class Sound {
 
     public string name;

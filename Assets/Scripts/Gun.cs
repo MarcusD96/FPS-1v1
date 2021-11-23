@@ -27,6 +27,33 @@ public class Gun : MonoBehaviour {
     [HideInInspector]
     public bool isReloading;
 
+    public void SetStats(float fireRate, float damage, float minDamage, float reloadTime, float minRange, float maxRange, float adsZoom, float adsSpeed, float hipFireBaseSpread, float hipFireMaxSpread, float recoveryTime, float switchInSpeed, int magazineSize, int penetration, int numReloadShells, bool isAuto, bool isShotgun, bool upgraded, string soundName, int shots, float headShotMult, float torsoShotMult, GunNameID gunID, BulletCasing bulletCasingPrefab) {
+        this.gunID = gunID;
+        this.bulletCasingPrefab = bulletCasingPrefab;
+        this.fireRate = fireRate;
+        this.damage = damage;
+        this.minDamage = minDamage;
+        this.reloadTime = reloadTime;
+        this.minRange = minRange;
+        this.maxRange = maxRange;
+        this.adsZoom = adsZoom;
+        this.adsSpeed = adsSpeed;
+        this.hipFireBaseSpread = hipFireBaseSpread;
+        this.hipFireMaxSpread = hipFireMaxSpread;
+        this.recoveryTime = recoveryTime;
+        this.switchInSpeed = switchInSpeed;
+        this.magazineSize = magazineSize;
+        this.penetration = penetration;
+        this.numReloadShells = numReloadShells;
+        this.isAuto = isAuto;
+        this.isShotgun = isShotgun;
+        this.upgraded = upgraded;
+        this.soundName = soundName;
+        this.shots = shots;
+        this.headShotMult = headShotMult;
+        this.torsoShotMult = torsoShotMult;
+    }
+
     private void Awake() {
         isReloading = false;
         canReload = true;

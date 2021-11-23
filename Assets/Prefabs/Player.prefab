@@ -971,6 +971,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!1 &3874168403001662292
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,7 +1100,7 @@ MonoBehaviour:
   isCrouching: 0
   healSpeed: 15
   healDelayTime: 8
-  handPos: {fileID: 3874168402367039435}
+  hand: {fileID: 3874168402367039435}
   animator: {fileID: 291170632204371270}
   damageVignette: {fileID: 6835663220331568841}
   pointsText: {fileID: 5646163901308916215}

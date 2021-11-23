@@ -38,6 +38,9 @@ public class PlayerShoot : MonoBehaviour {
         if(Settings.Paused)
             return;
 
+        if(guns.Count < 1)
+            return;
+
         SwitchWeapon();
         Shoot();
     }
@@ -161,7 +164,7 @@ public class PlayerShoot : MonoBehaviour {
                     }
                 }
 
-
+                //nudge hit object if moveable
                 if(hits[h].rigidbody != null) {
                     hits[h].rigidbody.AddForce(-hits[h].normal * currentGun.impactForce);
                 }
@@ -204,7 +207,6 @@ public class PlayerShoot : MonoBehaviour {
         if(meleeComp.isMeleeing)
             return;
 
-
         meleeComp.currentGun = currentGun = guns[gunIndex];
         for(int i = 0; i < guns.Count; i++) {
             if(i == gunIndex)
@@ -215,6 +217,7 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     public void GiveWeapon(GameObject g) {
+        g.transform.SetParent(GetComponent<Player>().hand, false);
         Gun gun = g.GetComponent<Gun>();
         if(guns.Count > 1) {
             Destroy(currentGun.gameObject);
@@ -225,6 +228,22 @@ public class PlayerShoot : MonoBehaviour {
             guns.Add(gun);
             gunIndex = 1;
             EquipWeapon();
+        }
+    }
+
+    public void RemoveCurrentWeapon() {
+        if(guns.Count >= 2) {
+            gunIndex--;
+            if(gunIndex < 0)
+                gunIndex = 0;
+            guns.Remove(currentGun);
+            Destroy(currentGun.gameObject);
+            EquipWeapon();
+        }
+        else {
+            gunIndex = -1;
+            guns.Remove(currentGun);
+            Destroy(currentGun.gameObject);
         }
     }
 

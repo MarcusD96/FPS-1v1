@@ -37,12 +37,14 @@ public class PlayerMovement : MonoBehaviour {
         //InvokeRepeating(nameof(GetLastPos), 0, 0.5f);
     }
 
-    Vector3 lastPos;
-    float lastTime;
-    void GetLastPos() {
-        print("Current Speed: " + ((transform.position - lastPos).magnitude / (Time.time - lastTime)) );
+    Vector3 lastPos = Vector3.zero;
+    float lastTime = 0f, actualSpeed = 0f;
+
+    void CalculateActualSpeed() {
+        actualSpeed = (transform.position - lastPos).magnitude / (Time.time - lastTime);
         lastTime = Time.time;
         lastPos = transform.position;
+
     }
 
     private void Update() {
@@ -58,6 +60,7 @@ public class PlayerMovement : MonoBehaviour {
         Move();
         Jump();
         Fall();
+        CalculateActualSpeed();
     }
 
     bool CheckGrounded() {
@@ -75,7 +78,7 @@ public class PlayerMovement : MonoBehaviour {
         float speed = lastSpeed;
 
         if(isGrounded) {
-            if(Input.GetKey(KeyCode.LeftShift) && !playerShootComp.currentGun.isReloading && !player.isCrouching && speed > 0.01f) {
+            if(Input.GetKey(KeyCode.LeftShift) && !playerShootComp.currentGun.isReloading && !player.isCrouching && actualSpeed > 0.01f) {
                 speed = lastSpeed = moveSpeed * 1.65f * Time.deltaTime;
                 isRunning = true;
                 Settings.FOV_Current = Mathf.Lerp(Settings.FOV_Current, Settings.FOV_Base + 20, 10f * Time.deltaTime);
@@ -101,7 +104,7 @@ public class PlayerMovement : MonoBehaviour {
             Settings.FOV_Current = Settings.FOV_Base;
         }
 
-       playerShootComp.currentGun.animator.SetBool("IsRunning", isRunning);
+        playerShootComp.currentGun.animator.SetBool("IsRunning", isRunning);
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
