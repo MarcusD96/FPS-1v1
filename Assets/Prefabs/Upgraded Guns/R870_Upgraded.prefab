@@ -334,7 +334,8 @@ MonoBehaviour:
   switchInSpeed: 1
   magazineSize: 16
   penetration: 1
-  remainingAmmo: 0
+  remainingAmmo: 160
+  maxAmmo: 176
   numReloadShells: 4
   isAuto: 0
   canReload: 0
@@ -342,7 +343,7 @@ MonoBehaviour:
   isShotgun: 1
   upgraded: 1
   primaryShot: 1
-  soundName: Rifle Shot
+  soundName: R870 Blast
   shots: 16
   headShotMult: 2
   torsoShotMult: 1

@@ -5,7 +5,6 @@ public class Enemy : MonoBehaviour {
 
     [Header("Stats")]
     public float hp;
-    public int pointsWorth;
     public float damage;
     public float attackRate, attackRange;
     public Collider head;
@@ -16,6 +15,8 @@ public class Enemy : MonoBehaviour {
     public bool isDead = false, isAttacking = false;
     [HideInInspector]
     public float nextAttack = 0f;
+
+    AudioSource growlSound;
 
     public void Initialize(int waveNum, bool lastEnemy_) {
         if(waveNum < 10) {
@@ -35,51 +36,70 @@ public class Enemy : MonoBehaviour {
                 }
             }
         }
+        Growl();
     }
 
     private void Update() {
         nextAttack -= Time.deltaTime;
+        if(isDead && growlSound != null)
+            growlSound.Stop();
     }
 
     public void DamageBody(float damage_, bool headShot) {
         hp -= damage_;
         if(hp <= 0) {
             if(headShot) {
-                PlayerManager.Instance.player.points += pointsWorth * 2;
-                AudioManager.instance.Play("Head Shot");
+                PlayerManager.Instance.HeadKillEnemy();
+                animator.SetTrigger("Headshot");
+                if(Random.Range(0, 10) == 0) 
+                    AudioManager.instance.PlaySound("Head Shot", AudioManager.instance.effects);
             }
-            else
-                PlayerManager.Instance.player.points += pointsWorth;
+            else {
+                PlayerManager.Instance.BodyKillEnemy();
+                AudioManager.instance.PlayAtLocation("Zombie Death", AudioManager.instance.effects, transform);
+                animator.SetTrigger("Die");
+            }
 
             isDead = true;
             head.enabled = false;
             foreach(var b in body) {
                 b.enabled = false;
             }
-            animator.SetTrigger("Die");
             if(FindObjectOfType<WaveSpawner>() != null)
                 FindObjectOfType<WaveSpawner>().RemoveEnemy(gameObject);
+             
+            PowerUpManager.Instance.TryToDropPowerUp(transform);
+            Destroy(gameObject, 2f);
+            return;
+        }
+        PlayerManager.Instance.HitEnemy();
+    }
+
+    public void DamageMelee(float damage_) {
+        hp -= damage_;
+        if(hp <= 0) {
+            PlayerManager.Instance.MeleeKillEnemy();
+            AudioManager.instance.PlayAtLocation("Zombie Death", AudioManager.instance.effects, transform);
+            animator.SetTrigger("Melee");
+            isDead = true;
+            head.enabled = false;
+            foreach(var b in body) {
+                b.enabled = false;
+            }
+            if(FindObjectOfType<WaveSpawner>() != null)
+                FindObjectOfType<WaveSpawner>().RemoveEnemy(gameObject);
+
+            PowerUpManager.Instance.TryToDropPowerUp(transform);
             Destroy(gameObject, 2f);
             return;
         }
         PlayerManager.Instance.player.points += 10;
     }
 
-    public void DamageMelee(float damage_) {
-        hp -= damage_;
-        if(hp <= 0) {
-            PlayerManager.Instance.player.points += (pointsWorth * 2) + 30;
-            isDead = true;
-            head.enabled = false;
-            foreach(var b in body) {
-                b.enabled = false;
-            }
-            animator.SetTrigger("Die");
-            if(FindObjectOfType<WaveSpawner>() != null)
-                FindObjectOfType<WaveSpawner>().RemoveEnemy(gameObject);
-            Destroy(gameObject, 2f);
-            return;
+    void Growl() {
+        if(Vector3.Distance(PlayerManager.Instance.player.transform.position, transform.position) < 10f) {
+            growlSound = AudioManager.instance.PlayAtLocation("Zombie Growl", AudioManager.instance.effects, transform);
         }
-        PlayerManager.Instance.player.points += 10;
+        Invoke(nameof(Growl), Random.Range(2f, 7f));
     }
 }

@@ -697,10 +697,11 @@ MonoBehaviour:
   hipFireBaseSpread: 0.2
   hipFireMaxSpread: 0.1
   recoveryTime: 10
-  switchInSpeed: 0
-  magazineSize: 15
+  switchInSpeed: 1
+  magazineSize: 8
   penetration: 50
-  remainingAmmo: 0
+  remainingAmmo: 80
+  maxAmmo: 88
   numReloadShells: 0
   isAuto: 0
   canReload: 0
@@ -708,7 +709,7 @@ MonoBehaviour:
   isShotgun: 0
   upgraded: 1
   primaryShot: 1
-  soundName: Sniper Shot
+  soundName: KSR Shot
   shots: 1
   headShotMult: 10
   torsoShotMult: 1.5

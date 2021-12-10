@@ -12,9 +12,10 @@ public class Melee : MonoBehaviour {
     public Gun currentGun;
     public PlayerShoot shootComp;
 
-
     [HideInInspector]
     public bool isMeleeing;
+    [HideInInspector]
+    public bool instaKill;
 
     float nextMeleeTime = 0;
 
@@ -33,6 +34,9 @@ public class Melee : MonoBehaviour {
     void DoMelee() {
         if(Input.GetKeyDown(KeyCode.Mouse4)) {
 
+
+            AudioManager.instance.PlaySound("Grunt_" + Random.Range(0, 5), AudioManager.instance.meleeGrunts);
+
             StartCoroutine(StopForMelee());
 
             GetComponent<PlayerShoot>().currentGun.animator.SetTrigger("Melee");
@@ -49,7 +53,11 @@ public class Melee : MonoBehaviour {
                         continue;
                 }
                 if(hits[i].transform.root.TryGetComponent(out e)) {
-                    e.DamageMelee(meleeDamage);
+                    if(instaKill)
+                        e.DamageMelee(float.MaxValue);
+                    else
+                        e.DamageMelee(meleeDamage);
+                        break;
                 }
             }
         }
@@ -61,7 +69,7 @@ public class Melee : MonoBehaviour {
             currentGun.StopAllCoroutines();
             currentGun.isReloading = false;
             if(currentGun.isShotgun) {
-                currentGun.animator.SetBool("Reloading", currentGun.isReloading); 
+                currentGun.animator.SetBool("Reloading", currentGun.isReloading);
             }
         }
         currentGun.canReload = false;

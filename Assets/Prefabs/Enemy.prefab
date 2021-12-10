@@ -686,7 +686,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 120
-  pointsWorth: 100
+  killWorth: 50
+  hitWorth: 10
+  headShotKillWorth: 100
   damage: 25
   attackRate: 1
   attackRange: 2.5

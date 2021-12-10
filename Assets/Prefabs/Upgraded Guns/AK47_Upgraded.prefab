@@ -263,9 +263,10 @@ MonoBehaviour:
   hipFireMaxSpread: 0.05
   recoveryTime: 6
   switchInSpeed: 1
-  magazineSize: 60
+  magazineSize: 45
   penetration: 10
-  remainingAmmo: 0
+  remainingAmmo: 450
+  maxAmmo: 495
   numReloadShells: 0
   isAuto: 1
   canReload: 0
@@ -273,7 +274,7 @@ MonoBehaviour:
   isShotgun: 0
   upgraded: 1
   primaryShot: 1
-  soundName: Rifle Shot
+  soundName: AK Shot
   shots: 1
   headShotMult: 5
   torsoShotMult: 1.5

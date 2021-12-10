@@ -12,14 +12,16 @@ public class PlayerZoom : MonoBehaviour {
     public Camera cam, weaponCam;
     public GameObject sniperScope, crossHair;
 
+    [HideInInspector]
+    public Vector3 handRestPos, handAimPos;
+
     float fovTracker = 0;
     public bool isZoomingIn = false;
 
-    private Vector3 handRestPos, handAimPos;
 
     void Start() {
         handRestPos = hand.localPosition;
-        handAimPos = handRestPos + (Vector3.back + Vector3.up + Vector3.left) / 4.0f;
+        handAimPos = handRestPos + (Vector3.back * 2 + Vector3.up + Vector3.left) / 4.0f;
     }
 
     private void Update() {

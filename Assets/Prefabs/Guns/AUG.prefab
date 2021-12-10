@@ -90,6 +90,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: NaN, y: -1.0929568e-27, z: 8.03e-43, w: 2.73e-43}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!1 &8697434681628350606
@@ -101,6 +102,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8697434681628350605}
+  - component: {fileID: 571550017571916496}
+  - component: {fileID: 3385423323110714819}
   m_Layer: 0
   m_Name: AUG
   m_TagString: Untagged
@@ -123,6 +126,74 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &571550017571916496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8697434681628350606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eddcf93ca51bc13488dfb74cfc93b70e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireRate: 8.333333
+  impactForce: 100
+  damage: 150
+  minDamage: 50
+  reloadTime: 4
+  minRange: 20
+  maxRange: 80
+  adsZoom: 1.6
+  adsSpeed: 3
+  hipFireBaseSpread: 0.08
+  hipFireMaxSpread: 0.08
+  recoveryTime: 10
+  switchInSpeed: 1
+  magazineSize: 56
+  penetration: 1
+  remainingAmmo: 280
+  maxAmmo: 336
+  numReloadShells: 0
+  isAuto: 1
+  canReload: 0
+  maxSpread: 0
+  isShotgun: 0
+  upgraded: 0
+  primaryShot: 1
+  soundName: AUG Shot
+  shots: 1
+  headShotMult: 3
+  torsoShotMult: 1
+  model: {fileID: 8697434682907672956}
+  gunID: 6
+  muzzleFlash: {fileID: 8697434683265727715}
+  secondaryMuzzleFlash: {fileID: 0}
+  bulletCasingPrefab: {fileID: -1793572164128123751, guid: 826c42d20db276343815d8e268f30bc0, type: 3}
+  ejectPorts:
+  - {fileID: 8697434683401534031}
+  animator: {fileID: 8697434682985908160}
+  upgradedGun: {fileID: 571550017571916496, guid: b81d570bc7739de45b78055bb3d021de, type: 3}
+  currentAmmo: 0
+  recoil: {fileID: 0}
+  isReloading: 0
+--- !u!114 &3385423323110714819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8697434681628350606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 008b4199f7a8ca642b84626c364caf2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recoil: 0.1
+  maxRecoil_X: -5
+  recoilSpeed: 4
+  recoilPower: 0.125
 --- !u!1 &8697434682384778102
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,40 +396,11 @@ Transform:
   - {fileID: 8697434682384778101}
   - {fileID: 8697434683058069615}
   - {fileID: 8697434683279172775}
+  - {fileID: 8697434683265727741}
+  - {fileID: 8697434683401534031}
   m_Father: {fileID: 8697434682946395072}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!1 &8697434682935266315
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8697434682935266314}
-  m_Layer: 11
-  m_Name: FirePos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8697434682935266314
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8697434682935266315}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.193, z: 1.111}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8697434683265727741}
-  m_Father: {fileID: 8697434682946395072}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8697434682985908161
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,8 +410,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8697434682946395072}
-  - component: {fileID: 8697434682985908166}
-  - component: {fileID: 8697434682985908167}
   - component: {fileID: 8697434682985908160}
   m_Layer: 11
   m_Name: AUG
@@ -386,69 +426,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8697434682985908161}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.073, z: -0.09}
+  m_LocalPosition: {x: 0, y: -0.073, z: 0.141}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8697434682907672931}
-  - {fileID: 8697434682935266314}
-  - {fileID: 8697434683401534031}
   m_Father: {fileID: 8697434681628350605}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8697434682985908166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8697434682985908161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eddcf93ca51bc13488dfb74cfc93b70e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireRate: 8.333333
-  impactForce: 100
-  damage: 15
-  minDamage: 6
-  reloadTime: 2.5
-  minRange: 20
-  maxRange: 80
-  adsZoom: 1.5
-  adsSpeed: 5
-  hipFireBaseSpread: 0
-  hipFireMaxSpread: 0.03
-  recoveryTime: 0.01
-  magazineSize: 42
-  penetration: 1
-  isAuto: 1
-  canReload: 0
-  maxSpread: 0
-  soundName: 
-  model: {fileID: 0}
-  muzzleFlash: {fileID: 8697434683265727715}
-  bulletCasingPrefab: {fileID: -1793572164128123751, guid: 826c42d20db276343815d8e268f30bc0, type: 3}
-  ejectPort: {fileID: 8697434683401534031}
-  animator: {fileID: 0}
-  currentAmmo: 0
-  recoil: {fileID: 0}
-  isReloading: 0
---- !u!114 &8697434682985908167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8697434682985908161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 008b4199f7a8ca642b84626c364caf2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recoil: 0.1
-  maxRecoil_X: -5
-  recoilSpeed: 4
-  recoilPower: 0.125
 --- !u!95 &8697434682985908160
 Animator:
   serializedVersion: 3
@@ -738,13 +722,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8697434683265727742}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.044}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 1.1550003, y: 0.193, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8697434681385761803}
-  m_Father: {fileID: 8697434682935266314}
-  m_RootOrder: 0
+  m_Father: {fileID: 8697434682907672931}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &8697434683265727715
 ParticleSystem:
@@ -753,7 +737,7 @@ ParticleSystem:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8697434683265727742}
-  serializedVersion: 6
+  serializedVersion: 7
   lengthInSec: 0.2
   simulationSpeed: 1
   stopAction: 0
@@ -4383,19 +4367,20 @@ ParticleSystem:
     range: {x: 0, y: 1}
   CollisionModule:
     enabled: 0
-    serializedVersion: 3
+    serializedVersion: 4
     type: 0
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    plane0: {fileID: 0}
-    plane1: {fileID: 0}
-    plane2: {fileID: 0}
-    plane3: {fileID: 0}
-    plane4: {fileID: 0}
-    plane5: {fileID: 0}
+    m_Planes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -4569,17 +4554,20 @@ ParticleSystem:
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
-    collisionShape0: {fileID: 0}
-    collisionShape1: {fileID: 0}
-    collisionShape2: {fileID: 0}
-    collisionShape3: {fileID: 0}
-    collisionShape4: {fileID: 0}
-    collisionShape5: {fileID: 0}
+    serializedVersion: 2
     inside: 1
     outside: 0
     enter: 0
     exit: 0
+    colliderQueryMode: 0
     radiusScale: 1
+    primitives:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
@@ -5690,10 +5678,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8697434683401534024}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.215, z: -0.321}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0.32100004, y: 0.215, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8697434682946395072}
-  m_RootOrder: 2
+  m_Father: {fileID: 8697434682907672931}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -25,6 +25,8 @@ public class PlayerShoot : MonoBehaviour {
     public int gunIndex = 0;
     [HideInInspector]
     public bool isSwitching = false;
+    [HideInInspector]
+    public bool instaKill = false;
 
     private void Awake() {
         zoom = GetComponent<PlayerZoom>();
@@ -51,8 +53,11 @@ public class PlayerShoot : MonoBehaviour {
 
         ammoText.text = currentGun.currentAmmo.ToString() + "/" + currentGun.remainingAmmo;
 
-        if(currentGun.currentAmmo <= 0 && currentGun.remainingAmmo <= 0)
+        if(currentGun.currentAmmo <= 0 && currentGun.remainingAmmo <= 0) {
+            if(Input.GetKeyDown(PlayerManager.Instance.fire))
+                AudioManager.instance.PlaySound("Empty Shot", AudioManager.instance.gunSounds);
             return;
+        }
 
         if(nextFire <= -0.1f && !currentGun.maxSpread)
             firingSpreadRadius = Mathf.Lerp(firingSpreadRadius, 0, currentGun.recoveryTime * Time.deltaTime);
@@ -60,12 +65,11 @@ public class PlayerShoot : MonoBehaviour {
         if(currentGun.maxSpread)
             firingSpreadRadius = 0;
 
-        if(meleeComp.isMeleeing || currentGun.isReloading || moveComp.isRunning || isSwitching) {
+        if(meleeComp.isMeleeing || currentGun.isReloading || moveComp.isRunning || isSwitching)
             return;
-        }
 
         if(currentGun.isAuto) {
-            if(Input.GetButton("Shoot")) {
+            if(Input.GetKey(PlayerManager.Instance.fire)) {
                 if(nextFire <= 0) {
                     Fire();
                     CalculateSpread();
@@ -75,7 +79,7 @@ public class PlayerShoot : MonoBehaviour {
             }
         }
         else {
-            if(Input.GetButtonDown("Shoot")) {
+            if(Input.GetKeyDown(PlayerManager.Instance.fire)) {
                 if(nextFire <= 0) {
                     Fire();
                     CalculateSpread();
@@ -88,10 +92,12 @@ public class PlayerShoot : MonoBehaviour {
 
     RaycastHit[] hits;
     void Fire() {
-        AudioManager.instance.Play(currentGun.soundName);
+        AudioManager.instance.PlaySound(currentGun.soundName, AudioManager.instance.gunSounds);
         if(currentGun.upgraded) {
-            AudioManager.instance.Play("Upgraded Shot");
+            AudioManager.instance.PlaySound("Upgraded Shot", AudioManager.instance.gunSounds);
         }
+        if(currentGun.currentAmmo == 1)
+            AudioManager.instance.PlaySound("Empty Shot", AudioManager.instance.gunSounds);
 
         CameraShaker.Instance.ShakeOnce(currentGun.recoil.recoilPower * 10, 8f, .1f, currentGun.recoil.recoilPower);
 
@@ -136,7 +142,6 @@ public class PlayerShoot : MonoBehaviour {
                     break;
                 }
                 if(hitList.Contains(hits[h].collider.transform.root.GetComponent<Enemy>())) {
-                    p++;
                     continue;
                 }
 
@@ -177,6 +182,9 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     void SwitchWeapon() {
+        if(isSwitching)
+            return;
+
         if(Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.Q)) {
             currentGun.isReloading = false;
             gunIndex--;
@@ -248,6 +256,9 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     float CalculateDamage(float distToTarget_) {
+        if(instaKill)
+            return float.MaxValue;
+
         //within min range
         if(distToTarget_ <= currentGun.minRange)
             return currentGun.damage;
@@ -300,6 +311,7 @@ public class PlayerShoot : MonoBehaviour {
     }
 
     IEnumerator SwitchWeaponDelay() {
+        yield return null;
         isSwitching = true;
 
         currentGun.animator.SetTrigger("Switch");

@@ -76,6 +76,7 @@ public class WallGunManager : MonoBehaviour {
     void BuyGun() {
         if(Input.GetKeyDown(KeyCode.F) && player.points >= activeWallGun.gunPrice) {
             player.points -= activeWallGun.gunPrice;
+            AudioManager.instance.PlaySound("$$$", AudioManager.instance.effects);
             activeWallGun.purchased = true;
             var g = Instantiate(activeWallGun.gunModel);
             activeWallGun.purchasedGun = g.GetComponent<Gun>();
@@ -91,6 +92,7 @@ public class WallGunManager : MonoBehaviour {
                     return;
                 }
                 player.points -= activeWallGun.ammoPrice;
+                AudioManager.instance.PlaySound("$$$", AudioManager.instance.effects);
                 var pShoot = player.GetComponent<PlayerShoot>();
                 var gun = pShoot.guns[pShoot.guns.IndexOf(activeWallGun.purchasedGun)];
                 gun.remainingAmmo = gun.magazineSize * 10;
@@ -102,6 +104,7 @@ public class WallGunManager : MonoBehaviour {
                     return;
                 }
                 player.points -= activeWallGun.ammoPrice * 3;
+                AudioManager.instance.PlaySound("$$$", AudioManager.instance.effects);
                 var pShoot = player.GetComponent<PlayerShoot>();
                 var gun = pShoot.guns[pShoot.guns.IndexOf(activeWallGun.purchasedGun)];
                 gun.remainingAmmo = gun.magazineSize * 10;

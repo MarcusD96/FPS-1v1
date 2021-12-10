@@ -265,7 +265,8 @@ MonoBehaviour:
   switchInSpeed: 1
   magazineSize: 30
   penetration: 5
-  remainingAmmo: 0
+  remainingAmmo: 270
+  maxAmmo: 300
   numReloadShells: 0
   isAuto: 1
   canReload: 0
@@ -273,7 +274,7 @@ MonoBehaviour:
   isShotgun: 0
   upgraded: 0
   primaryShot: 1
-  soundName: Rifle Shot
+  soundName: AK Shot
   shots: 1
   headShotMult: 4
   torsoShotMult: 1

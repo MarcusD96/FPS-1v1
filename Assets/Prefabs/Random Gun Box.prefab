@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 7402680107014069007}
   - component: {fileID: 7402680107014069006}
   - component: {fileID: 7402680107014069005}
+  - component: {fileID: 1309877682641607317}
   m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
@@ -58,7 +59,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7402680107014069003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7402680108806233320}
@@ -299,7 +300,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a1e97cbf2538241b691aae8243b5fb10, type: 2}
+  - {fileID: 2100000, guid: 785e91a05f063424f8354f98b1ab38f8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -343,6 +344,25 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!95 &1309877682641607317
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7402680107014069003}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a677a4360ab5ec247b35ed3237850fd7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7402680108806233318
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,7 +373,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7402680108806233320}
   - component: {fileID: 7402680108806233319}
-  - component: {fileID: 8486605289315232571}
   m_Layer: 0
   m_Name: Random Gun Box
   m_TagString: Untagged
@@ -391,32 +410,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 950
   interactDistance: 2
-  switchTime: 0.25
+  switchTime: 0.15
   gunRewardTime: 3
   rewardExpiryTime: 10
-  animator: {fileID: 8486605289315232571}
+  animator: {fileID: 1309877682641607317}
   gunModelPos: {fileID: 2194661010808680699}
-  levelGuns:
-  - {fileID: 8181241431691469833, guid: 6f942cc94e87aa24c984adfb49c4be9b, type: 3}
-  - {fileID: 1780608734277330074, guid: 473f56a8a802dc743b76e5d20c964997, type: 3}
-  - {fileID: 2203930807040660927, guid: 1eceb5b71de12eb47b6332d6206cdf99, type: 3}
-  - {fileID: 4821799738722205373, guid: 39606380d652ce042bc7c61a3f09769d, type: 3}
---- !u!95 &8486605289315232571
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7402680108806233318}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a677a4360ab5ec247b35ed3237850fd7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  boxGuns:
+  - {fileID: 5903356133548117547, guid: 966ff32f40b202043aa34e1c9e12783b, type: 3}
+  - {fileID: 8355274699879762239, guid: 40bd5b88a2a03a148aa691700852e260, type: 3}
+  - {fileID: 5238228130613832762, guid: 996c413931546b24db8de0e5cbffa201, type: 3}
+  - {fileID: 8217522940287590811, guid: ded2701fb0b6650499997758be03f5ec, type: 3}
+  - {fileID: 5625974034265540674, guid: 5e1d8cbafb073cd4aba9422523ff61b6, type: 3}

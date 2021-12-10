@@ -13,6 +13,7 @@ public class EnemyAI : MonoBehaviour {
     Transform target;
     NavMeshAgent agent;
     Enemy enemy;
+    AudioSource attackSound;
 
     IEnumerator attack = null;
 
@@ -32,6 +33,8 @@ public class EnemyAI : MonoBehaviour {
     private void Update() {
         if(enemy.isDead) {
             agent.velocity = Vector3.zero;
+            if(attackSound != null)
+                attackSound.Stop();
             return;
         }
 
@@ -67,6 +70,7 @@ public class EnemyAI : MonoBehaviour {
 
     IEnumerator AttackTarget() {
         enemy.animator.SetTrigger("Attack");
+        attackSound = AudioManager.instance.PlayAtLocation("Zombie Attack", AudioManager.instance.effects, transform);
         float spd = agent.speed;
         agent.speed = 0;
 

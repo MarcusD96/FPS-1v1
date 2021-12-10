@@ -8,11 +8,9 @@ public class Player : MonoBehaviour {
     public float hp;
     public int points;
 
-    public bool isCrouching;
     public float healSpeed, healDelayTime;
 
     public Transform hand;
-    public Animator animator;
     public Image damageVignette;
 
     [Header("UI Elements")]
@@ -68,27 +66,8 @@ public class Player : MonoBehaviour {
         dmgColor.a = Mathf.Lerp(0.4f, 0f, hpPercent);
         damageVignette.color = dmgColor;
 
-        pointsText.text = "Points: " + points.ToString();
+        pointsText.text = points.ToString();
 
         Heal();
-        Crouch();
-    }
-
-    void Crouch() {
-        if(!animator)
-            return;
-        if(Input.GetKey(KeyCode.LeftControl)) {
-            if(!isCrouching) {
-                isCrouching = true;
-                GetComponent<PlayerMovement>().moveSpeed /= 2f;
-            }
-        }
-        else {
-            if(isCrouching) {
-                isCrouching = false;
-                GetComponent<PlayerMovement>().moveSpeed *= 2f;
-            }
-        }
-        animator.SetBool("Crouch", isCrouching);
     }
 }

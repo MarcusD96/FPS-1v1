@@ -14,7 +14,7 @@ public class WaveSpawner : MonoBehaviour {
 
     bool waveStarted = false;
     [SerializeField]
-    int waveNum = 29;
+    int waveNum;
 
     List<GameObject> spawnedEnemies = new List<GameObject>();
 
@@ -97,6 +97,8 @@ public class WaveSpawner : MonoBehaviour {
             numSpawn = 137 + ((waveNum - 1) * 5);
             spawnTime = 0.25f;
         }
+
+        PowerUpManager.Instance.InitializeChanceToSpawn(waveNum, numSpawn);
     }
 
     public void RemoveEnemy(GameObject e) {

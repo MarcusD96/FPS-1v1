@@ -58,6 +58,7 @@ public class DoorManager : MonoBehaviour {
             return;
 
         player.points -= activeDoor.cost;
+        AudioManager.instance.PlaySound("$$$", AudioManager.instance.effects);
         doors.Remove(activeDoor);
         activeDoor.BuyDoor();
         foreach(var r in rooms) {

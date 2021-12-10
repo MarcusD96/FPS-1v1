@@ -6,7 +6,6 @@ public class CreateNewGun : EditorWindow {
 
     static EditorWindow window;
 
-
     [MenuItem("Tools/Create new Gun")]
     public static void ShowWindow() {
         window = GetWindow(typeof(CreateNewGun));
@@ -20,7 +19,7 @@ public class CreateNewGun : EditorWindow {
 
     //gun stats
     GunNameID gunID;
-    float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed;
+    float fireRate, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed;
     int magazineSize, penetration, numReloadShells;
     bool isAuto, isShotgun;
     int shots;
@@ -34,7 +33,7 @@ public class CreateNewGun : EditorWindow {
         gunName = EditorGUILayout.TextField("Gun Name", gunName);
         model = EditorGUILayout.ObjectField("Gun Model", model, typeof(GameObject), false) as GameObject;
         casing = EditorGUILayout.ObjectField("Casing Model", casing, typeof(BulletCasing), false) as BulletCasing;
-        shootClip = EditorGUILayout.ObjectField("Casing Model", casing, typeof(AudioClip), false) as AudioClip;
+        shootClip = EditorGUILayout.ObjectField("Shoot Sound", shootClip, typeof(AudioClip), false) as AudioClip;
 
         GUILayout.Label("\nGun Stats", EditorStyles.boldLabel);
         gunID = (GunNameID) EditorGUILayout.EnumPopup("Gun ID", gunID);
@@ -64,7 +63,7 @@ public class CreateNewGun : EditorWindow {
         if(noName || noModel || noCasing || noSound) {
             GUI.color = Color.red;
             GUILayout.Label("***************************************************************************************************************", EditorStyles.popup);
-            GUI.color = Color.white; 
+            GUI.color = Color.white;
         }
         if(noName) {
             GUI.color = Color.red;
@@ -120,7 +119,7 @@ public class CreateNewGun : EditorWindow {
     }
 
     void Finish() {
-        window.Close();
+        //window.Close();
         GameObject g = CreateGun(false);
         CreateGun(true);
         CreateWallGun(g);
@@ -144,12 +143,25 @@ public class CreateNewGun : EditorWindow {
 
         //Create sound in AudioManager
         var am = FindObjectOfType<AudioManager>();
-        Sound[] sounds = new Sound[am.sounds.Length + 1];
-        for(int i = 0; i < sounds.Length - 1; i++) {
-            sounds[i] = am.sounds[i];
+        bool uniqueSound = true;
+        foreach(var s in am.gunSounds) {
+            if(s.clip.name == shootClip.name)
+                uniqueSound = false;
+            break;
         }
-        sounds[sounds.Length] = new Sound();
-        am.sounds = sounds;
+        if(uniqueSound) {
+            Sound[] sounds = new Sound[am.gunSounds.Length + 1];
+            //add new sound effect to audio manager
+            for(int i = 0; i < sounds.Length - 1; i++) {
+                sounds[i] = am.gunSounds[i];
+            }
+
+            var newSound = new Sound();
+            sounds[sounds.Length - 1] = newSound;
+            newSound.name = shootClip.name;
+            newSound.clip = shootClip;
+            am.gunSounds = sounds;
+        }
 
         //Create Holder Transform and link with base object
         var g_holder = new GameObject(gName);

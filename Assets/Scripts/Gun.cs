@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour {
 
-    public float fireRate, impactForce, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed;
-    public int magazineSize, penetration, remainingAmmo, numReloadShells;
+    public float fireRate, impactForce = 100, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed;
+    public int magazineSize, penetration, remainingAmmo, maxAmmo, numReloadShells;
     public bool isAuto, canReload, maxSpread, isShotgun, upgraded, primaryShot = true;
     public string soundName;
     public int shots;
@@ -59,9 +59,12 @@ public class Gun : MonoBehaviour {
         canReload = true;
         recoil = GetComponent<Recoil>();
         currentAmmo = magazineSize;
+
         if(!isShotgun)
             currentAmmo += 1;
-        remainingAmmo = magazineSize * 10;
+
+        if(remainingAmmo <= 0)
+            remainingAmmo = maxAmmo = magazineSize * 8;
     }
 
     private void Update() {
@@ -84,6 +87,7 @@ public class Gun : MonoBehaviour {
 
     public void Fire() {
         if(currentAmmo <= 0) {
+            AudioManager.instance.PlaySound("Empty Shot", AudioManager.instance.gunSounds);
             Reload();
             return;
         }
