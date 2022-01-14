@@ -12,7 +12,6 @@ public class RandomGunBox : Interactable {
     public Transform gunModelPos;
     public List<BoxGun> boxGuns;
 
-    bool boxActivated = false;
     string chosenGunName;
     Player p;
     PlayerShoot ps;
@@ -70,7 +69,6 @@ public class RandomGunBox : Interactable {
     }
 
     IEnumerator AnimateReward() {
-        boxActivated = true;
         boxState = GunBoxState.ROLLING;
 
         BoxGun rewardGun = GetWeightedRandomGun();
@@ -116,7 +114,6 @@ public class RandomGunBox : Interactable {
 
 
         boxState = GunBoxState.AVAILABLE;
-        boxActivated = false;
     }
 
     int rerollNum = 0;

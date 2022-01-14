@@ -76,8 +76,8 @@ MonoBehaviour:
   mixerGroup: {fileID: 0}
   backgroundNoise:
     name: Background Noise
-    clip: {fileID: 8300000, guid: cf13974dc5f063046936e6b688c60c46, type: 3}
-    volume: 0.1
+    clip: {fileID: 8300000, guid: 5c42a087fc7748c44b6e6ee82169c11c, type: 3}
+    volume: 0.05
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0
@@ -247,6 +247,43 @@ MonoBehaviour:
     pitch: 1
     pitchVariance: 0
     loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  powerUps:
+  - name: Double Points
+    clip: {fileID: 8300000, guid: 6bfd427a8f58ccc4ca41f42e21c40106, type: 3}
+    volume: 0.5
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: Insta Kill
+    clip: {fileID: 8300000, guid: 996630c467410ea4981fee79d966b1cf, type: 3}
+    volume: 0.5
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: Max Ammo
+    clip: {fileID: 8300000, guid: a019baa7083df874d97855e87f2a35da, type: 3}
+    volume: 0.5
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: Shine
+    clip: {fileID: 8300000, guid: ce97be3281f3d1040bd0a727546c715d, type: 3}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.5
+    loop: 1
     mixerGroup: {fileID: 0}
     source: {fileID: 0}
 --- !u!114 &5986815153227131605

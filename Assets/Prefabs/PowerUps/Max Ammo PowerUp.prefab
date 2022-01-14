@@ -71,6 +71,7 @@ MonoBehaviour:
   rotateSpeed: 20
   collectionDistance: 1
   weightChance: 10
+  powerUpSoundName: Max Ammo
   powerUpTime: 0
 --- !u!1 &6060374859997677050
 GameObject:

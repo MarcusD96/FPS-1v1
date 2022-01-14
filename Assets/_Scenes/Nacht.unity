@@ -35879,10 +35879,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3054562513102995012, guid: 760478c64a7bd7d40987ee257a5bd8b7, type: 3}
-      propertyPath: backgroundNoise.volume
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 3054562513102995014, guid: 760478c64a7bd7d40987ee257a5bd8b7, type: 3}
       propertyPath: m_RootOrder
       value: 0

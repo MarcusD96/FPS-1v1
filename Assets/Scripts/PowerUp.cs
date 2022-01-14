@@ -12,16 +12,19 @@ public class PowerUp : MonoBehaviour {
     public int weightChance = 10;
 
     [Header("PowerUp Settings")]
+    public string powerUpSoundName;
     public float powerUpTime;
 
     protected Player player;
 
     float despawnEndTime;
     bool collected = false;
+    AudioSource sound;
 
     private void Start() {
         despawnEndTime = Time.time + despawnTime;
         transform.position += Vector3.up;
+        sound  = AudioManager.instance.PlayAtLocation("Shine", AudioManager.instance.powerUps, transform);
     }
 
     protected void Update() {
@@ -29,8 +32,10 @@ public class PowerUp : MonoBehaviour {
             RotatePowerUp();
             CheckCollection(); 
         }
-        if(Time.time >= despawnEndTime && !collected)
+        if(Time.time >= despawnEndTime && !collected) { 
+            sound.Stop();
             Destroy(gameObject);
+        }
     }
 
     void RotatePowerUp() {
@@ -54,6 +59,8 @@ public class PowerUp : MonoBehaviour {
         foreach(Transform c in transform) {
             Destroy(c.gameObject);
         }
+        AudioManager.instance.PlaySound(powerUpSoundName, AudioManager.instance.powerUps);
+        sound.Stop();
         Destroy(gameObject, powerUpTime + 1f);
     }
 }

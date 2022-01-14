@@ -47,7 +47,7 @@ public class PowerUpManager : MonoBehaviour {
         int r = Random.Range(0, totalWeights);
         foreach(var p in powerUps) {
             if(r < p.weightChance) {
-                Instantiate(p, enemy.position, Quaternion.identity);
+                var powerup = Instantiate(p, enemy.position, Quaternion.identity);
                 return;
             }
             r -= p.weightChance;

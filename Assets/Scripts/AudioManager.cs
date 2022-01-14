@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour {
     public Sound[] gunSounds;
     public Sound[] effects;
     public Sound[] meleeGrunts;
+    public Sound[] powerUps;
 
     void Awake() {
         if(instance != null) {
@@ -25,6 +26,7 @@ public class AudioManager : MonoBehaviour {
         InitializeSounds(gunSounds);
         InitializeSounds(effects);
         InitializeSounds(meleeGrunts);
+        InitializeSounds(powerUps);
 
         InitializeSound(backgroundNoise);
         backgroundNoise.source.Play();
@@ -84,10 +86,11 @@ public class AudioManager : MonoBehaviour {
         source.spatialBlend = 1f;
 
         source.Play();
-        Destroy(g, source.clip.length + 0.5f);
+        if(!source.loop) {
+            Destroy(g, source.clip.length + 0.5f); 
+        }
         return source;
     }
-
 }
 
 [Serializable]
