@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddcf93ca51bc13488dfb74cfc93b70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunName: AK47
   fireRate: 10.66666
   impactForce: 100
   damage: 150
@@ -266,7 +267,7 @@ MonoBehaviour:
   magazineSize: 30
   penetration: 5
   remainingAmmo: 270
-  maxAmmo: 300
+  maxAmmo: 270
   numReloadShells: 0
   isAuto: 1
   canReload: 0

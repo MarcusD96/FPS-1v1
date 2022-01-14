@@ -35,15 +35,12 @@ public class DoorManager : MonoBehaviour {
             }
         }
 
-        if(closestDist > interactDistance) {
-            player.buyDoor.SetActive(false);
+        if(closestDist > interactDistance) 
             activeDoor = null;
-        }
-        else {
+
+        else
             activeDoor = thisDoor;
-            player.buyDoor.SetActive(true);
-            player.buyDoorText.text = "Buy door for: " + activeDoor.cost + " (F)";
-        }
+
     }
 
     private void Update() {
@@ -63,7 +60,7 @@ public class DoorManager : MonoBehaviour {
         activeDoor.BuyDoor();
         foreach(var r in rooms) {
             if(!r.unlocked) {
-                r.CheckAccess();
+                r.CheckRoomAccess();
             }
         }
         NavMeshBaker.Instance.TriggerBuildMesh();

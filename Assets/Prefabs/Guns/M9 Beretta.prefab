@@ -406,6 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddcf93ca51bc13488dfb74cfc93b70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunName: M9
   fireRate: 10.411667
   impactForce: 100
   damage: 20

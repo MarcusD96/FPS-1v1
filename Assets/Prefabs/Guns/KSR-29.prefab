@@ -685,6 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddcf93ca51bc13488dfb74cfc93b70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunName: KSR-29
   fireRate: 0.75
   impactForce: 100
   damage: 500
@@ -701,7 +702,7 @@ MonoBehaviour:
   magazineSize: 5
   penetration: 25
   remainingAmmo: 50
-  maxAmmo: 55
+  maxAmmo: 50
   numReloadShells: 0
   isAuto: 0
   canReload: 0

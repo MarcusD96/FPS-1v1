@@ -90,6 +90,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: NaN, y: -1.0929568e-27, z: 8.03e-43, w: 2.73e-43}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!1 &8697434681628350606
@@ -102,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8697434681628350605}
   m_Layer: 0
-  m_Name: AUG
+  m_Name: AUG_WallGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -419,17 +420,30 @@ MonoBehaviour:
   hipFireBaseSpread: 0
   hipFireMaxSpread: 0.03
   recoveryTime: 0.01
+  switchInSpeed: 0
   magazineSize: 42
   penetration: 1
+  remainingAmmo: 0
+  maxAmmo: 0
+  numReloadShells: 0
   isAuto: 1
   canReload: 0
   maxSpread: 0
+  isShotgun: 0
+  upgraded: 0
+  primaryShot: 1
   soundName: 
+  shots: 0
+  headShotMult: 0
+  torsoShotMult: 0
   model: {fileID: 0}
+  gunID: 0
   muzzleFlash: {fileID: 8697434683265727715}
+  secondaryMuzzleFlash: {fileID: 0}
   bulletCasingPrefab: {fileID: -1793572164128123751, guid: 826c42d20db276343815d8e268f30bc0, type: 3}
-  ejectPort: {fileID: 8697434683401534031}
+  ejectPorts: []
   animator: {fileID: 0}
+  upgradedGun: {fileID: 0}
   currentAmmo: 0
   recoil: {fileID: 0}
   isReloading: 0
@@ -753,7 +767,7 @@ ParticleSystem:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8697434683265727742}
-  serializedVersion: 6
+  serializedVersion: 7
   lengthInSec: 0.2
   simulationSpeed: 1
   stopAction: 0
@@ -4383,19 +4397,20 @@ ParticleSystem:
     range: {x: 0, y: 1}
   CollisionModule:
     enabled: 0
-    serializedVersion: 3
+    serializedVersion: 4
     type: 0
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
     multiplyColliderForceByCollisionAngle: 1
-    plane0: {fileID: 0}
-    plane1: {fileID: 0}
-    plane2: {fileID: 0}
-    plane3: {fileID: 0}
-    plane4: {fileID: 0}
-    plane5: {fileID: 0}
+    m_Planes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     m_Dampen:
       serializedVersion: 2
       minMaxState: 0
@@ -4569,17 +4584,20 @@ ParticleSystem:
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
-    collisionShape0: {fileID: 0}
-    collisionShape1: {fileID: 0}
-    collisionShape2: {fileID: 0}
-    collisionShape3: {fileID: 0}
-    collisionShape4: {fileID: 0}
-    collisionShape5: {fileID: 0}
+    serializedVersion: 2
     inside: 1
     outside: 0
     enter: 0
     exit: 0
+    colliderQueryMode: 0
     radiusScale: 1
+    primitives:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0

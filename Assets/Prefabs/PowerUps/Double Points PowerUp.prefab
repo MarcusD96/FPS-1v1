@@ -4949,7 +4949,7 @@ MonoBehaviour:
   rotateSpeed: 20
   collectionDistance: 1
   weightChance: 10
-  powerUpTime: 15
+  powerUpTime: 30
 --- !u!95 &1573986753046720168
 Animator:
   serializedVersion: 3

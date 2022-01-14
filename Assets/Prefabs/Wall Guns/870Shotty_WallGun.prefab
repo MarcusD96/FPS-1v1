@@ -48,6 +48,7 @@ MonoBehaviour:
   gunPrice: 1250
   ammoPrice: 500
   purchased: 0
+  purchasedGunName: 
   gunModel: {fileID: 2203930807040660924, guid: 1eceb5b71de12eb47b6332d6206cdf99, type: 3}
   purchasedGun: {fileID: 0}
 --- !u!1 &2380718063267947688

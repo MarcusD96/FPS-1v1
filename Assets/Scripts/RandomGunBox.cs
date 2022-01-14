@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomGunBox : MonoBehaviour {
+public class RandomGunBox : Interactable {
 
     public int cost;
     public float interactDistance;
@@ -13,11 +13,14 @@ public class RandomGunBox : MonoBehaviour {
     public List<BoxGun> boxGuns;
 
     bool boxActivated = false;
+    string chosenGunName;
     Player p;
     PlayerShoot ps;
+    GunBoxState boxState;
 
     private void Start() {
         InvokeRepeating(nameof(ShakeBox), 0, 3f);
+        boxState = GunBoxState.AVAILABLE;
     }
 
     void Update() {
@@ -28,62 +31,20 @@ public class RandomGunBox : MonoBehaviour {
             }
             return;
         }
-
-        if(Vector3.Distance(transform.position, p.transform.position) <= interactDistance && p.points >= cost && !boxActivated) {
-            if(Input.GetKeyDown(KeyCode.F)) {
-                p.points -= cost;
-                StartCoroutine(NewAnimateReward());
-            }
-        }
     }
 
-    IEnumerator AnimateReward() {
-        boxActivated = true;
+    void RollBox() {
+        if(p.points < cost)
+            return;
 
-        //Choose random gun
-        int r = Random.Range(0, boxGuns.Count);
-        var randGun = GetRandomGun(r);
-        int chosenIndex = actualInt;
-
-        float endTime = Time.time + gunRewardTime;
-        //keep switching guns for total time with switch time intervals
-        while(Time.time < endTime) {
-            var g = Instantiate(boxGuns[r].gun, gunModelPos);
-            r++;
-            if(r >= boxGuns.Count)
-                r = 0;
-            yield return new WaitForSeconds(switchTime);
-            Destroy(g.gameObject);
-
-        }
-
-        var finalGun = Instantiate(randGun, gunModelPos);
-
-        //offer gun to player until expiry time, replace current gun if max amount of guns are held or offer new gun if not
-        float expiryTime = Time.time + rewardExpiryTime;
-        while(Time.time < expiryTime) {
-            if(Input.GetKeyDown(KeyCode.F)) {
-                var playerGun = Instantiate(boxGuns[chosenIndex].gun);
-                ps.GiveWeapon(playerGun.gameObject);
-
-                //check for level wallgun
-                foreach(var wg in FindObjectOfType<WallGunManager>().GetWallGuns()) {
-                    //if the random gun id == the wallgun gun id, mark wallgun as purchased
-                    var gun = wg.gunModel.GetComponent<Gun>();
-                    if(gun.gunID == playerGun.gunID) {
-                        wg.purchased = true;
-                        wg.purchasedGun = playerGun;
-                    }
-                }
-                break;
-            }
-            yield return null;
-        }
-        Destroy(finalGun.gameObject);
-
-        boxActivated = false;
+        p.points -= cost;
+        StartCoroutine(AnimateReward());
     }
 
+    void RetrieveRolledGun() {
+
+    }
+    
     int actualInt;
     Gun GetRandomGun(int randInt) {
         actualInt = randInt;
@@ -108,8 +69,9 @@ public class RandomGunBox : MonoBehaviour {
         return returnGun;
     }
 
-    IEnumerator NewAnimateReward() {
+    IEnumerator AnimateReward() {
         boxActivated = true;
+        boxState = GunBoxState.ROLLING;
 
         BoxGun rewardGun = GetWeightedRandomGun();
 
@@ -127,11 +89,13 @@ public class RandomGunBox : MonoBehaviour {
 
         //present chosen gun
         BoxGun chosenGun = Instantiate(rewardGun, gunModelPos);
+        chosenGunName = chosenGun.gun.gunID.ToString();
+        boxState = GunBoxState.RETRIEVABLE;
 
         //allow player to take withing timeframe of retrieval
         float expiryTime = Time.time + rewardExpiryTime;
         while(Time.time < expiryTime) {
-            if(Input.GetKeyDown(KeyCode.F)) {
+            if(Input.GetKeyDown(PlayerManager.Instance.interact)) {
                 var playerGun = Instantiate(rewardGun.gun);
                 ps.GiveWeapon(playerGun.gameObject);
 
@@ -150,10 +114,13 @@ public class RandomGunBox : MonoBehaviour {
         }
         Destroy(chosenGun.gameObject);
 
+
+        boxState = GunBoxState.AVAILABLE;
         boxActivated = false;
     }
 
     int rerollNum = 0;
+
     BoxGun GetWeightedRandomGun() {
         if(rerollNum > 25) {
             Debug.LogError("Rerolled too many times;");
@@ -205,6 +172,36 @@ public class RandomGunBox : MonoBehaviour {
         animator.SetInteger("Idle Num", r);
         animator.SetTrigger("Shake");
     }
+
+    public override void UpdateInteractText() {
+        switch(boxState) {
+            case GunBoxState.AVAILABLE:
+                PlayerManager.Instance.player.ShowInteractionText("Get Random Gun for " + cost + " " + PlayerManager.Instance.interactKey);
+                break;
+            case GunBoxState.ROLLING:
+                PlayerManager.Instance.player.HideInteractionText();
+                ;
+                break;
+            case GunBoxState.RETRIEVABLE:
+                PlayerManager.Instance.player.ShowInteractionText("Retrieve " + chosenGunName + " " + PlayerManager.Instance.interactKey);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void OnInteract() {
+        switch(boxState) {
+            case GunBoxState.AVAILABLE:
+                RollBox();
+                break;
+            case GunBoxState.RETRIEVABLE:
+                RetrieveRolledGun();
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 public enum GunNameID {
@@ -215,4 +212,10 @@ public enum GunNameID {
     AK47,
     KSR,
     AUG
+}
+
+public enum GunBoxState {
+    AVAILABLE,
+    ROLLING,
+    RETRIEVABLE
 }

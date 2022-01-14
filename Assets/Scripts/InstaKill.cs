@@ -8,6 +8,7 @@ public class InstaKill : PowerUp {
     }
 
     IEnumerator StartInstaKill() {
+        player.instaKillIcon.AddTime(powerUpTime);
         player.GetComponent<PlayerShoot>().instaKill = true;
         player.GetComponent<Melee>().instaKill = true;
         yield return new WaitForSeconds(powerUpTime);

@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 2336173444181203809}
   - component: {fileID: 8167919876409373792}
   m_Layer: 0
-  m_Name: AK47
+  m_Name: AK47_WallGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
   gunPrice: 4500
   ammoPrice: 1500
   purchased: 0
+  purchasedGunName: 
   gunModel: {fileID: 2336173444181203808, guid: 473f56a8a802dc743b76e5d20c964997, type: 3}
   purchasedGun: {fileID: 0}
 --- !u!1 &2616820004750895913

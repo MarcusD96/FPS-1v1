@@ -1,7 +1,6 @@
 using UnityEngine.Audio;
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour {
 
@@ -9,6 +8,7 @@ public class AudioManager : MonoBehaviour {
 
     public AudioMixerGroup mixerGroup;
 
+    public Sound backgroundNoise;
     public Sound[] gunSounds;
     public Sound[] effects;
     public Sound[] meleeGrunts;
@@ -20,11 +20,14 @@ public class AudioManager : MonoBehaviour {
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject);
 
+        DontDestroyOnLoad(gameObject);
         InitializeSounds(gunSounds);
         InitializeSounds(effects);
         InitializeSounds(meleeGrunts);
+
+        InitializeSound(backgroundNoise);
+        backgroundNoise.source.Play();
     }
 
     void InitializeSounds(Sound[] array) {
@@ -32,9 +35,18 @@ public class AudioManager : MonoBehaviour {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
             s.source.loop = s.loop;
+            s.source.volume = s.volume;
 
             s.source.outputAudioMixerGroup = mixerGroup;
         }
+    }
+    void InitializeSound(Sound sound) {
+        sound.source = gameObject.AddComponent<AudioSource>();
+        sound.source.clip = sound.clip;
+        sound.source.loop = sound.loop;
+        sound.source.volume = sound.volume;
+
+        sound.source.outputAudioMixerGroup = mixerGroup;
     }
 
     public void PlaySound(string sound, Sound[] array) {

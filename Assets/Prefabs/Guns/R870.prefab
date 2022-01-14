@@ -319,6 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddcf93ca51bc13488dfb74cfc93b70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunName: Remington 870
   fireRate: 1
   impactForce: 100
   damage: 80
@@ -334,8 +335,8 @@ MonoBehaviour:
   switchInSpeed: 1
   magazineSize: 8
   penetration: 1
-  remainingAmmo: 80
-  maxAmmo: 88
+  remainingAmmo: 72
+  maxAmmo: 72
   numReloadShells: 1
   isAuto: 0
   canReload: 0

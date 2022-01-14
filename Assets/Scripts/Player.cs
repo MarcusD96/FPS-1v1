@@ -14,20 +14,33 @@ public class Player : MonoBehaviour {
     public Image damageVignette;
 
     [Header("UI Elements")]
+    public GameObject textContainer;
+    public TextMeshProUGUI interactText;
+
     public TextMeshProUGUI pointsText;
     public TextMeshProUGUI waveNum;
-    public GameObject buyWeapon;
-    public TextMeshProUGUI buyWeaponText;
-    public GameObject buyDoor;
-    public TextMeshProUGUI buyDoorText;
-    public GameObject buyUpgrade;
-    public TextMeshProUGUI buyUpgradeText;
+
+    public PowerUpIcon doublePointsIcon, instaKillIcon;
 
     float startHp, timeToHealStart = 0f;
     float damageCooldown = 0.5f, nextDamage = 0f;
 
     private void Start() {
         startHp = hp;
+    }
+
+    private void Update() {
+        timeToHealStart -= Time.deltaTime;
+        nextDamage -= Time.deltaTime;
+
+        Color dmgColor = damageVignette.color;
+        var hpPercent = hp / startHp;
+        dmgColor.a = Mathf.Lerp(0.4f, 0f, hpPercent);
+        damageVignette.color = dmgColor;
+
+        pointsText.text = points.ToString();
+
+        Heal();
     }
 
     public void Damage(float damage_) {
@@ -56,18 +69,12 @@ public class Player : MonoBehaviour {
             hp = startHp;
     }
 
+    public void ShowInteractionText(string text_) {
+        textContainer.SetActive(true);
+        interactText.text = text_;
+    }
 
-    private void Update() {
-        timeToHealStart -= Time.deltaTime;
-        nextDamage -= Time.deltaTime;
-
-        Color dmgColor = damageVignette.color;
-        var hpPercent = hp / startHp;
-        dmgColor.a = Mathf.Lerp(0.4f, 0f, hpPercent);
-        damageVignette.color = dmgColor;
-
-        pointsText.text = points.ToString();
-
-        Heal();
+    public void HideInteractionText() {
+        textContainer.SetActive(false);
     }
 }

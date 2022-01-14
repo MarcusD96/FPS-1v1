@@ -230,13 +230,12 @@ public class PlayerShoot : MonoBehaviour {
         if(guns.Count > 1) {
             Destroy(currentGun.gameObject);
             guns[gunIndex] = gun;
-            EquipWeapon();
         }
         else {
             guns.Add(gun);
             gunIndex = 1;
-            EquipWeapon();
         }
+        EquipWeapon();
     }
 
     public void RemoveCurrentWeapon() {

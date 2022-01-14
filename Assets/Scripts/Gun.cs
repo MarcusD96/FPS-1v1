@@ -3,6 +3,7 @@ using System.Diagnostics;
 using UnityEngine;
 
 public class Gun : MonoBehaviour {
+    public string gunName;
 
     public float fireRate, impactForce = 100, damage, minDamage, reloadTime, minRange, maxRange, adsZoom, adsSpeed, hipFireBaseSpread, hipFireMaxSpread, recoveryTime, switchInSpeed;
     public int magazineSize, penetration, remainingAmmo, maxAmmo, numReloadShells;
@@ -189,5 +190,12 @@ public class Gun : MonoBehaviour {
 
     public float GetZoomFOV() {
         return Settings.FOV_Current / adsZoom;
+    }
+
+    public void MaxAmmo() {
+        if(remainingAmmo <= 0)
+            remainingAmmo = maxAmmo + magazineSize;
+        else
+            remainingAmmo = maxAmmo;
     }
 }

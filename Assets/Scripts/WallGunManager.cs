@@ -42,20 +42,10 @@ public class WallGunManager : MonoBehaviour {
         }
 
         if(closestDist > interactDistance) {
-            player.buyWeapon.SetActive(false);
             activeWallGun = null;
         }
         else {
             activeWallGun = wg;
-            player.buyWeapon.SetActive(true);
-            if(!wg.purchased)
-                player.buyWeaponText.text = wg.gunName + " - " + wg.gunPrice + " (F)";
-            else {
-                if(!activeWallGun.purchasedGun.upgraded)
-                    player.buyWeaponText.text = wg.purchasedGunName + " - " + wg.ammoPrice + " (F)";
-                else
-                    player.buyWeaponText.text = "UPGRADED" + wg.purchasedGunName + " - " + wg.ammoPrice * 3 + " (F)";
-            }
         }
     }
 
@@ -100,7 +90,7 @@ public class WallGunManager : MonoBehaviour {
         }
         else {
             if(Input.GetKeyDown(KeyCode.F) && player.points >= activeWallGun.ammoPrice * 3 && activeWallGun.purchasedGun == ps.currentGun) {
-                if(ps.currentGun.remainingAmmo >= ps.currentGun.magazineSize * 10) {
+                if(ps.currentGun.remainingAmmo >= ps.currentGun.maxAmmo) {
                     return;
                 }
                 player.points -= activeWallGun.ammoPrice * 3;

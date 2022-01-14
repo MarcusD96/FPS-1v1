@@ -57,8 +57,10 @@ MonoBehaviour:
   useEqipment: 103
   interact: 102
   pause: 27
+  interactionDistance: 0
   player: {fileID: 0}
   killPoints: 50
+  interactKey: 
 --- !u!114 &3054562513102995012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,6 +74,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixerGroup: {fileID: 0}
+  backgroundNoise:
+    name: Background Noise
+    clip: {fileID: 8300000, guid: cf13974dc5f063046936e6b688c60c46, type: 3}
+    volume: 0.1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
   gunSounds:
   - name: M9 Shot
     clip: {fileID: 8300000, guid: f6288603f93b73f4e892a6d0b46d9eb4, type: 3}
@@ -249,7 +261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01e53f915c1de84884c853ec46507b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chanceToDrop: 0.2
   powerUps:
   - {fileID: 1573986753046720182, guid: 744704c71590e784dae886801bab061e, type: 3}
   - {fileID: 3036504526272744709, guid: 51993589868f64749a8978d1c3f3ed4c, type: 3}

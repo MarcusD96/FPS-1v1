@@ -44,5 +44,4 @@ public class PointsManager : MonoBehaviour {
             }
         }
     }
-
 }

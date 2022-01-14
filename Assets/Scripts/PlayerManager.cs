@@ -29,22 +29,29 @@ public class PlayerManager : MonoBehaviour {
     public KeyCode right = KeyCode.D;
     public KeyCode sprint = KeyCode.LeftShift;
     public KeyCode crouch = KeyCode.LeftControl;
+
     [Header("Gun Controls")]
     public KeyCode fire = KeyCode.Mouse0;
     public KeyCode ADS = KeyCode.Mouse1;
     public KeyCode melee = KeyCode.Mouse4;
+
     [Header("Other Controls")]
     public KeyCode useEqipment = KeyCode.E;
     public KeyCode interact = KeyCode.F;
     public KeyCode pause = KeyCode.Escape;
+
+    [Header("Interaction")]
+    public float interactionDistance;
     #endregion
 
     public Player player;
     public int killPoints;
+    public string interactKey;
 
     private void Start() {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 150;
+        interactKey = "(" + interact.ToString() + ")";
     }
 
     public void BodyKillEnemy() {

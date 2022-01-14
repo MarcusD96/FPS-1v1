@@ -11,6 +11,7 @@ public class DoublePoints : PowerUp {
 
     IEnumerator StartDoublePoints() {
         PlayerManager.Instance.killPoints *= 2;
+        player.doublePointsIcon.AddTime(powerUpTime);
         yield return new WaitForSeconds(powerUpTime);
         PlayerManager.Instance.killPoints /= 2;
     }

@@ -497,7 +497,7 @@ GameObject:
   - component: {fileID: 4188182102378362151}
   - component: {fileID: 520748801960159829}
   m_Layer: 0
-  m_Name: KSR-29
+  m_Name: KSR-29_WallGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -534,6 +534,7 @@ MonoBehaviour:
   gunPrice: 9000
   ammoPrice: 3000
   purchased: 0
+  purchasedGunName: 
   gunModel: {fileID: 4188182102378362150, guid: 39606380d652ce042bc7c61a3f09769d, type: 3}
   purchasedGun: {fileID: 0}
 --- !u!1 &4938539046929574995
